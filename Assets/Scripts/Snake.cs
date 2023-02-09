@@ -25,6 +25,8 @@ public class Snake : MonoBehaviour
         // adds snake head to segments list
         segments = new List<Transform>();
         segments.Add(transform);
+
+        gameObject.GetComponent<TimeBody>().Record();
     }
 
     // Update is called once per frame
@@ -56,23 +58,36 @@ public class Snake : MonoBehaviour
         // Unity docs advise doing this when using Time.timeScale to pause game
         Time.fixedDeltaTime = GameManager.instance.getDefaultFixedDeltaTime() * Time.timeScale;
 
-        // stops snake from moving before game has started
-        // stops snake from moving while game is rewinding
-        if (GameManager.instance.isGameStarted() && GameManager.instance.isRewinding() == false) {
-            // sets position of each snake segment to the segment ahead of it
-            for (int i = segments.Count - 1; i > 0; i--) {
-                segments[i].position = segments[i - 1].position;
-            }
+        // if game is rewinding decrement update and return
+        if (GameManager.instance.isRewinding()) {
+            GameManager.instance.decrementNumUpdates();
+            return;
+        } 
 
-            // sets position of snake head
-            transform.position = new Vector3(
-                Mathf.Round(transform.position.x + direction.x),
-                Mathf.Round(transform.position.y + direction.y),
-                0.0f
-            );
+        // if game is paused return
+        if (GameManager.instance.isGamePaused()) return;
 
-            directionKeyUpdated = false;
+        // sets position of each snake segment to the segment ahead of it
+        for (int i = segments.Count - 1; i > 0; i--) {
+            segments[i].position = segments[i - 1].position;
         }
+
+        // sets position of snake head
+        transform.position = new Vector3(
+            Mathf.Round(transform.position.x + direction.x),
+            Mathf.Round(transform.position.y + direction.y),
+            0.0f
+        );
+
+        directionKeyUpdated = false;
+
+        GameManager.instance.incrementNumUpdates();
+    }
+
+    // removes last Transform in list and destroys it
+    public void removeLast() {
+        Destroy(segments[segments.Count-1].gameObject); // Destroy
+        segments.RemoveAt(segments.Count-1); // Remove
     }
 
     // called when game object this scripts attatched to collides with another object
@@ -92,6 +107,8 @@ public class Snake : MonoBehaviour
     // and pauses game
     private void Reset() {
         GameManager.instance.pauseGame();
+        GameManager.instance.resetNumUpdates();
+
         transform.position = new Vector3(0.0f, 0.0f, 0.0f);
         for (int i = segments.Count - 1; i > 0; i--) {
             Destroy(segments[i].gameObject);
@@ -105,5 +122,15 @@ public class Snake : MonoBehaviour
         Transform newSegment = Instantiate(snakeBodyPrefab, transform.parent);
         newSegment.position = segments[segments.Count - 1].position;
         segments.Add(newSegment);
+    }
+
+    public Vector2 getDirection()
+    {
+        return this.direction;
+    }
+
+    public void setDirection(Vector2 direction)
+    {
+        this.direction = direction;
     }
 }

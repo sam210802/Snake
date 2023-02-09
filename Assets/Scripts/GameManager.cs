@@ -20,15 +20,15 @@ public class GameManager : MonoBehaviour
     private GameObject foodObject;
     private Transform snakeObject;
 
-    private bool gameStarted = false;
-
     private bool rewinding = false;
+    private int numUpdates = 0;
+    private bool gamePaused = false;
 
     // Awake is called before first frame update and before start
     void Awake() {
         instance = this;
         // pauses game immediatly
-        Time.timeScale = 0;
+        pauseGame();
     }
 
     // Start is called before the first frame update
@@ -42,39 +42,47 @@ public class GameManager : MonoBehaviour
     {
         // pauses and unpases the game
         if (Input.GetKeyUp(KeyCode.Space)) {
-            if (gameStarted == false) {
-                foodObject.GetComponent<Food>().RandomisePos();
+            if (gamePaused) {
                 resumeGame();
-                gameStarted = true;
-            } else if (Time.timeScale == 1) {
+            } else {
                 pauseGame();
-            } else if (Time.timeScale == 0) {
-                resumeGame();
             }
         }
 
-        // rewing game
-        if (Input.GetKeyDown(KeyCode.Return)) {
+        // rewinding game
+        if (Input.GetKeyDown(KeyCode.Return) && numUpdates > 0) {
             startRewinding();
         } else if (Input.GetKeyUp(KeyCode.Return)) {
+            stopRewinding();
+        }
+
+        if (numUpdates < 0 && rewinding) {
+            Debug.Log("Num updates < 0");
+            resetNumUpdates();
             stopRewinding();
         }
     }
 
     public void pauseGame() {
-        Time.timeScale = 0;
+        Time.timeScale = 0.0f;
+        gamePaused = true;
     }
 
     public void resumeGame() {
-        Time.timeScale = 1;
+        Time.timeScale = 1.0f;
+        gamePaused = false;
     }
 
     void startRewinding() {
         rewinding = true;
+        Debug.Log("Rewinding");
     }
 
     void stopRewinding() {
         rewinding = false;
+        pauseGame();
+        Debug.Log("Rewinding Stopped");
+        Debug.Log(numUpdates);
     }
 
     // creates all game objects required to play game
@@ -121,7 +129,7 @@ public class GameManager : MonoBehaviour
             Destroy(foodObject);
         }
         foodObject = Instantiate(foodPrefab);
-        // stops snake from colliding with appl eon start
+        // stops snake from colliding with apple on start
         foodObject.transform.position = new Vector3(1, 1, 0);
     }
 
@@ -156,12 +164,6 @@ public class GameManager : MonoBehaviour
         return this.defaultFixedDeltaTime;
     }
 
-    // get if game has started yet
-    public bool isGameStarted()
-    {
-        return this.gameStarted;
-    }
-
     public bool isRewinding()
     {
         return this.rewinding;
@@ -170,5 +172,30 @@ public class GameManager : MonoBehaviour
     public void setRewinding(bool rewinding)
     {
         this.rewinding = rewinding;
+    }
+
+    public void incrementNumUpdates() {
+        numUpdates += 1;
+    }
+
+    public void decrementNumUpdates() {
+        numUpdates -= 1;
+    }
+
+    // resets num updates to 0
+    // also cleares any TimeBody position lists
+    // player can't rewind further than when this was last called
+    public void resetNumUpdates() {
+        numUpdates = 0;
+
+        TimeBody[] scripts = (TimeBody[]) FindObjectsOfType(typeof(TimeBody));
+        foreach (TimeBody script in scripts) {
+            script.resetPositions();
+        }
+    }
+
+    public bool isGamePaused()
+    {
+        return this.gamePaused;
     }
 }

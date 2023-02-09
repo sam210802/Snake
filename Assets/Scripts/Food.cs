@@ -10,7 +10,8 @@ public class Food : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-
+        StartCoroutine(RandomisePos());
+        gameObject.GetComponent<TimeBody>().Record();
     }
 
     // Update is called once per frame
@@ -21,7 +22,7 @@ public class Food : MonoBehaviour
 
     // sets the transforms position this scipts attatched to
     // to a random position within the game area
-    public void RandomisePos() {
+    public IEnumerator RandomisePos() {
         bool uniquePos = false;
         Vector3 newPos = new Vector3();
 
@@ -49,13 +50,14 @@ public class Food : MonoBehaviour
         }
 
         this.transform.position = newPos;
+        yield return null;
     }
 
     // called when game object this scripts attatched to collides with another object
     private void OnTriggerEnter2D(Collider2D other) {
         // if player collides with food change location
-        if (other.tag == "Player") {
-            RandomisePos();
+        if (other.tag == "SnakeHead") {
+            StartCoroutine(RandomisePos());
         }
     }
 }
