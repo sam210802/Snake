@@ -1,20 +1,13 @@
-using UnityEditor;
-using UnityEngine;
-using System.IO;
 using System;
-
-namespace GitHub.Unity
+namespace Unity.VersionControl.Git
 {
-    [InitializeOnLoad]
-    public class UnityAPIWrapper : ScriptableSingleton<UnityAPIWrapper>
+    public static class UnityShim
     {
-        static UnityAPIWrapper()
+        public static event Action<UnityEditor.Editor> Editor_finishedDefaultHeaderGUI;
+        public static void Raise_Editor_finishedDefaultHeaderGUI(UnityEditor.Editor editor)
         {
-#if UNITY_2018_2_OR_NEWER
-            Editor.finishedDefaultHeaderGUI += editor => {
-                UnityShim.Raise_Editor_finishedDefaultHeaderGUI(editor);
-            };
-#endif
+            if (Editor_finishedDefaultHeaderGUI != null)
+                Editor_finishedDefaultHeaderGUI(editor);
         }
     }
 }
