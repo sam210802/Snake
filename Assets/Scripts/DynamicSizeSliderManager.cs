@@ -13,6 +13,9 @@ public class DynamicSizeSliderManager : MonoBehaviour
     RectTransform sliderTransform;
 
     [SerializeField]
+    RectTransform topParent;
+
+    [SerializeField]
     int sliderMinWidth = 250;
     [SerializeField]
     VerticalLayoutGroup layoutGroup;
@@ -53,6 +56,7 @@ public class DynamicSizeSliderManager : MonoBehaviour
             Debug.Log("Text smaller than " + sliderMinWidth + "px");
         }
         Debug.Log("Updated Size");
+        LayoutRebuilder.ForceRebuildLayoutImmediate(topParent);
     }
 
     // sets slider size to same as largest slider

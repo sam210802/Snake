@@ -32,6 +32,5 @@ public class ResizableTextManager : MonoBehaviour
         Dictionary<string, float> textSize = JsonConvert.DeserializeObject<Dictionary<string, float>>(fileContent);
 
         text.fontSize = (int) (text.fontSize * textSize[currentTextSize]);
-        Debug.Log(text.fontSize);
     }
 }
