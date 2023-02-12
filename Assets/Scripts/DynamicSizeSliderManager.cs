@@ -23,21 +23,29 @@ public class DynamicSizeSliderManager : MonoBehaviour
     [SerializeField]
     List<Slider> sliders;
 
+    private float time = 0.0f;
+    private float updateTime = 1.0f;
+
     void Start() {
         updateSize();
     }
 
     void Update() {
+        time += Time.deltaTime;
+        if (time < updateTime) return; // code below only exectued when updateTime seconds passed
+        
+        time -= updateTime;
+
         if (mainTransform.hasChanged) {
-            // Debug.Log("Main Transform Changed");
+            Debug.Log("Main Transform Changed");
             updateSize();
             mainTransform.hasChanged = false;
         } else if (textTransform.hasChanged) {
-            // Debug.Log("Text Transform Changed");
+            Debug.Log("Text Transform Changed");
             updateSize();
             textTransform.hasChanged = false;
         } else if (sliderTransform.hasChanged) {
-            // Debug.Log("Slider Transform Changed");
+            Debug.Log("Slider Transform Changed");
             updateSize();
             sliderTransform.hasChanged = false;
         }
@@ -49,13 +57,9 @@ public class DynamicSizeSliderManager : MonoBehaviour
             mainTransform.sizeDelta = new Vector2(textTransform.rect.width, (textTransform.rect.height+layoutGroup.spacing+sliderTransform.rect.height));
 
             if (sliders != null) normaliseSlider();
-
-            Debug.Log("Text bigger than " + sliderMinWidth + "px");
         } else {
             sliderTransform.sizeDelta = new Vector2(sliderMinWidth, (sliderMinWidth/sliderTransform.rect.width)*sliderTransform.rect.height);
-            Debug.Log("Text smaller than " + sliderMinWidth + "px");
         }
-        Debug.Log("Updated Size");
         LayoutRebuilder.ForceRebuildLayoutImmediate(topParent);
     }
 
@@ -67,7 +71,6 @@ public class DynamicSizeSliderManager : MonoBehaviour
             if (sliderWidth > sliderTransform.rect.width) {
                 sliderTransform.sizeDelta = new Vector2(sliderWidth, sliderHeight);
                 mainTransform.sizeDelta = new Vector2(Mathf.Max(sliderWidth, textTransform.rect.width), (textTransform.rect.height+layoutGroup.spacing+sliderTransform.rect.height));
-                Debug.Log("Normalised");
             }
         }
     }
