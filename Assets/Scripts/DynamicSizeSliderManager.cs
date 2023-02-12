@@ -37,15 +37,12 @@ public class DynamicSizeSliderManager : MonoBehaviour
         time -= updateTime;
 
         if (mainTransform.hasChanged) {
-            Debug.Log("Main Transform Changed");
             updateSize();
             mainTransform.hasChanged = false;
         } else if (textTransform.hasChanged) {
-            Debug.Log("Text Transform Changed");
             updateSize();
             textTransform.hasChanged = false;
         } else if (sliderTransform.hasChanged) {
-            Debug.Log("Slider Transform Changed");
             updateSize();
             sliderTransform.hasChanged = false;
         }
@@ -59,6 +56,7 @@ public class DynamicSizeSliderManager : MonoBehaviour
             if (sliders != null) normaliseSlider();
         } else {
             sliderTransform.sizeDelta = new Vector2(sliderMinWidth, (sliderMinWidth/sliderTransform.rect.width)*sliderTransform.rect.height);
+            mainTransform.sizeDelta = new Vector2(sliderMinWidth, (textTransform.rect.height+layoutGroup.spacing+sliderTransform.rect.height));
         }
         LayoutRebuilder.ForceRebuildLayoutImmediate(topParent);
     }
