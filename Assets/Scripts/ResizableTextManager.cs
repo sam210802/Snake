@@ -12,7 +12,9 @@ public class ResizableTextManager : MonoBehaviour
 {
     // location where default text sizes are stored
     static string textSizeFile = "Assets/Data/textSize.json";
-    static int defaultFontSize = 24;
+    
+    [SerializeField]
+    int defaultFontSize = 24;
 
     [SerializeField]
     TMP_Text text;

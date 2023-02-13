@@ -26,8 +26,6 @@ public class DynamicSizeSliderManager : MonoBehaviour
 
     private float currentFontSize;
 
-    private bool normalised = false;
-
     void Start() {
         currentFontSize = textTransform.GetComponent<TMP_Text>().fontSize;
         startUpdateSizeCoroutine();
@@ -77,7 +75,6 @@ public class DynamicSizeSliderManager : MonoBehaviour
             if (sliderWidth > sliderTransform.rect.width) {
                 sliderTransform.sizeDelta = new Vector2(sliderWidth, sliderHeight);
                 mainTransform.sizeDelta = new Vector2(Mathf.Max(sliderWidth, textTransform.rect.width), (textTransform.rect.height+layoutGroup.spacing+sliderTransform.rect.height));
-                normalised = true;
             }
         }
         yield return null;
