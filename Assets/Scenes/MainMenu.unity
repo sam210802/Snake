@@ -402,9 +402,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9322d93b75200c47bee51bbefca1a60, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  defaultFontSize: 24
   text: {fileID: 599274635}
   parentLayout: {fileID: 157320828}
-  update: 0
 --- !u!1 &633331653
 GameObject:
   m_ObjectHideFlags: 0
@@ -442,9 +442,9 @@ RectTransform:
   m_Father: {fileID: 1054612626}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 152.255, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 0, y: -20}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &633331655
@@ -630,9 +630,9 @@ RectTransform:
   m_Father: {fileID: 1054612626}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 152.255, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 0, y: -40}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &712183390
@@ -1251,9 +1251,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9322d93b75200c47bee51bbefca1a60, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  defaultFontSize: 24
   text: {fileID: 1021330263}
   parentLayout: {fileID: 157320828}
-  update: 0
 --- !u!1 &1054612625
 GameObject:
   m_ObjectHideFlags: 0
@@ -1376,9 +1376,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9322d93b75200c47bee51bbefca1a60, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  defaultFontSize: 24
   text: {fileID: 1114570461}
   parentLayout: {fileID: 157320828}
-  update: 0
 --- !u!1 &1139467777 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1046427434287429250, guid: 4058f46bb66fadf47882c2724538ac1d, type: 3}
@@ -1487,9 +1487,9 @@ RectTransform:
   m_Father: {fileID: 2041083584}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 85.12, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 5, y: -5}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1260093552
@@ -1615,9 +1615,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9322d93b75200c47bee51bbefca1a60, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  defaultFontSize: 60
   text: {fileID: 1260093553}
   parentLayout: {fileID: 1054612626}
-  update: 0
 --- !u!1 &1321287245
 GameObject:
   m_ObjectHideFlags: 0
@@ -1781,9 +1781,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9322d93b75200c47bee51bbefca1a60, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  defaultFontSize: 60
   text: {fileID: 1321287248}
   parentLayout: {fileID: 1054612626}
-  update: 0
 --- !u!1 &1365171183
 GameObject:
   m_ObjectHideFlags: 0
@@ -2034,9 +2034,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9322d93b75200c47bee51bbefca1a60, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  defaultFontSize: 60
   text: {fileID: 1569089952}
   parentLayout: {fileID: 1054612626}
-  update: 0
 --- !u!1 &1587888559
 GameObject:
   m_ObjectHideFlags: 0
@@ -2200,9 +2200,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9322d93b75200c47bee51bbefca1a60, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  defaultFontSize: 60
   text: {fileID: 1587888562}
   parentLayout: {fileID: 0}
-  update: 0
 --- !u!114 &1621393799 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1513621423285519550, guid: 44ce79a2e6d61354b94b438ee480ff27, type: 3}
@@ -2406,9 +2406,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9322d93b75200c47bee51bbefca1a60, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  defaultFontSize: 60
   text: {fileID: 1842556847}
   parentLayout: {fileID: 0}
-  update: 0
 --- !u!1001 &1867938569
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2569,6 +2569,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 758112412}
     - target: {fileID: 8638997240405270152, guid: 44ce79a2e6d61354b94b438ee480ff27, type: 3}
+      propertyPath: parentLayout
+      value: 
+      objectReference: {fileID: 157320828}
+    - target: {fileID: 8638997240405270152, guid: 44ce79a2e6d61354b94b438ee480ff27, type: 3}
       propertyPath: sliderMinWidth
       value: 200
       objectReference: {fileID: 0}
@@ -2625,7 +2629,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 152.255, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2041083585
@@ -2793,6 +2797,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: SFXVolumeSlider
       objectReference: {fileID: 0}
+    - target: {fileID: 1513621423755417544, guid: 44ce79a2e6d61354b94b438ee480ff27, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1513621423755417547, guid: 44ce79a2e6d61354b94b438ee480ff27, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -2915,6 +2923,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8638997240405270152, guid: 44ce79a2e6d61354b94b438ee480ff27, type: 3}
       propertyPath: topParent
+      value: 
+      objectReference: {fileID: 157320828}
+    - target: {fileID: 8638997240405270152, guid: 44ce79a2e6d61354b94b438ee480ff27, type: 3}
+      propertyPath: parentLayout
       value: 
       objectReference: {fileID: 157320828}
     - target: {fileID: 8638997240405270152, guid: 44ce79a2e6d61354b94b438ee480ff27, type: 3}
@@ -3068,7 +3080,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1046427434287429254, guid: 4058f46bb66fadf47882c2724538ac1d, type: 3}
       propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: startSaveTextPrefsCoroutine
+      value: startCoroutines
       objectReference: {fileID: 0}
     - target: {fileID: 1046427434287429254, guid: 4058f46bb66fadf47882c2724538ac1d, type: 3}
       propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
@@ -3314,6 +3326,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: MusicVolumeOption
       objectReference: {fileID: 0}
+    - target: {fileID: 1513621423755417544, guid: 44ce79a2e6d61354b94b438ee480ff27, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1513621423755417547, guid: 44ce79a2e6d61354b94b438ee480ff27, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -3428,6 +3444,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8638997240405270152, guid: 44ce79a2e6d61354b94b438ee480ff27, type: 3}
       propertyPath: topParent
+      value: 
+      objectReference: {fileID: 157320828}
+    - target: {fileID: 8638997240405270152, guid: 44ce79a2e6d61354b94b438ee480ff27, type: 3}
+      propertyPath: parentLayout
       value: 
       objectReference: {fileID: 157320828}
     - target: {fileID: 8638997240405270152, guid: 44ce79a2e6d61354b94b438ee480ff27, type: 3}

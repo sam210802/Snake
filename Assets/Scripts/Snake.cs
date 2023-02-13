@@ -109,6 +109,9 @@ public class Snake : MonoBehaviour
         GameManager.instance.pauseGame();
         GameManager.instance.resetNumUpdates();
 
+        GameObject.FindGameObjectWithTag("UI").GetComponent<GameUI>().setHighScore();
+
+        // reset snake
         transform.position = new Vector3(0.0f, 0.0f, 0.0f);
         for (int i = segments.Count - 1; i > 0; i--) {
             Destroy(segments[i].gameObject);

@@ -8,7 +8,9 @@ TagManager:
   - Food
   - Snake
   - SnakeHead
-  - Text - Resizable
+  - Score
+  - UI
+  - HighScore
   layers:
   - Default
   - TransparentFX

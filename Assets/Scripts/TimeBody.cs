@@ -84,7 +84,5 @@ public class TimeBody : MonoBehaviour
         }
 
         Record();
-
-        Debug.Log("List Reset");
     }
 }
