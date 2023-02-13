@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class DynamicSizeSliderManager : MonoBehaviour
 {
@@ -13,7 +14,7 @@ public class DynamicSizeSliderManager : MonoBehaviour
     RectTransform sliderTransform;
 
     [SerializeField]
-    RectTransform topParent;
+    RectTransform parentLayout;
 
     [SerializeField]
     int sliderMinWidth = 250;
@@ -23,53 +24,67 @@ public class DynamicSizeSliderManager : MonoBehaviour
     [SerializeField]
     List<Slider> sliders;
 
-    private float time = 0.0f;
-    private float updateTime = 1.0f;
+    private float currentFontSize;
+
+    private bool normalised = false;
 
     void Start() {
-        updateSize();
+        currentFontSize = textTransform.GetComponent<TMP_Text>().fontSize;
+        startUpdateSizeCoroutine();
+    }
+
+    void OnEnable() {
+        startUpdateSizeCoroutine();
     }
 
     void Update() {
-        time += Time.deltaTime;
-        if (time < updateTime) return; // code below only exectued when updateTime seconds passed
-        
-        time -= updateTime;
-
-        if (mainTransform.hasChanged) {
-            updateSize();
-            mainTransform.hasChanged = false;
-        } else if (textTransform.hasChanged) {
-            updateSize();
-            textTransform.hasChanged = false;
-        } else if (sliderTransform.hasChanged) {
-            updateSize();
-            sliderTransform.hasChanged = false;
+        // update slider size if font has changed size
+        if (textTransform.GetComponent<TMP_Text>().fontSize != currentFontSize) {
+            currentFontSize = textTransform.GetComponent<TMP_Text>().fontSize;
+            startUpdateSizeCoroutine();
         }
     }
 
-    void updateSize() {
+    public void startUpdateSizeCoroutine() {
+        StartCoroutine(coroutines());
+    }
+
+    private IEnumerator coroutines() {
+        yield return StartCoroutine(textTransform.GetComponent<ResizableTextManager>().coroutines());
+        yield return StartCoroutine(updateSize());
+        yield return StartCoroutine(normaliseSlider());
+        yield return StartCoroutine(forceLayoutRebuild());
+    }
+
+    private IEnumerator updateSize() {
         if (textTransform.rect.width > sliderMinWidth) {
             sliderTransform.sizeDelta = new Vector2(textTransform.rect.width, (textTransform.rect.width/sliderTransform.rect.width)*sliderTransform.rect.height);
             mainTransform.sizeDelta = new Vector2(textTransform.rect.width, (textTransform.rect.height+layoutGroup.spacing+sliderTransform.rect.height));
-
-            if (sliders != null) normaliseSlider();
         } else {
             sliderTransform.sizeDelta = new Vector2(sliderMinWidth, (sliderMinWidth/sliderTransform.rect.width)*sliderTransform.rect.height);
             mainTransform.sizeDelta = new Vector2(sliderMinWidth, (textTransform.rect.height+layoutGroup.spacing+sliderTransform.rect.height));
         }
-        LayoutRebuilder.ForceRebuildLayoutImmediate(topParent);
+        yield return null;
     }
 
     // sets slider size to same as largest slider
-    void normaliseSlider() {
+    private IEnumerator normaliseSlider() {
+        if (sliders == null) yield break;
+
         foreach (Slider slider in sliders) {
             float sliderWidth = slider.GetComponent<RectTransform>().rect.width;
             float sliderHeight = slider.GetComponent<RectTransform>().rect.height;
             if (sliderWidth > sliderTransform.rect.width) {
                 sliderTransform.sizeDelta = new Vector2(sliderWidth, sliderHeight);
                 mainTransform.sizeDelta = new Vector2(Mathf.Max(sliderWidth, textTransform.rect.width), (textTransform.rect.height+layoutGroup.spacing+sliderTransform.rect.height));
+                normalised = true;
             }
         }
+        yield return null;
+    }
+
+    private IEnumerator forceLayoutRebuild() {
+        LayoutRebuilder.ForceRebuildLayoutImmediate(parentLayout);
+        yield return null;
     }
 }
