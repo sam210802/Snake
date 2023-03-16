@@ -1,0 +1,55 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9620f8c34305754d8cc9a7e49e852d9, type: 3}
+  m_Name: UI Text_fr
+  m_EditorClassIdentifier: 
+  m_LocaleId:
+    m_Code: fr
+  m_SharedData: {fileID: 11400000, guid: 2649cabe78ad15441ada259f20ac3c04, type: 2}
+  m_Metadata:
+    m_Items: []
+  m_TableData:
+  - m_Id: 255157833728
+    m_Localized: JOUER
+    m_Metadata:
+      m_Items: []
+  - m_Id: 857992564736
+    m_Localized: CHOIX
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1227007430656
+    m_Localized: LES NIVEAUX
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1367227207680
+    m_Localized: SORTIE
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1501142945792
+    m_Localized: VOLUME PRINCIPAL
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1682882138112
+    m_Localized: VOLUME SFX
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1821147369472
+    m_Localized: VOLUME DE LA MUSIQUE
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1958460493824
+    m_Localized: DOS
+    m_Metadata:
+      m_Items: []
+  references:
+    version: 2
+    RefIds: []

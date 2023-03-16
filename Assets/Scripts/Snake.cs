@@ -1,18 +1,19 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class Snake : MonoBehaviour
 {
+    // means direction can only be updated once per fixed update
     private bool directionKeyUpdated = false;
+    // direction snake is traveling
     private Vector2 direction = Vector2.up;
+    // list of transforms for each snake segment
     private List<Transform> segments;
 
+    // snake body prefab
     [SerializeField]
     private Transform snakeBodyPrefab;
 
-    // creates new snake object and makes 
-    // game object this script is attatched to child of it
     void Start() {
         // creates empty object to store all snake transforms
         GameObject parent = new GameObject();
@@ -26,6 +27,7 @@ public class Snake : MonoBehaviour
         segments = new List<Transform>();
         segments.Add(transform);
 
+        // records position of snake so player can rewind to it
         gameObject.GetComponent<TimeBody>().Record();
     }
 
@@ -37,6 +39,7 @@ public class Snake : MonoBehaviour
             return;
         }
 
+        // gets keyboard input from user and changes direction of snake if move is legal
         if (Input.GetKeyDown(KeyCode.W) && direction != Vector2.down) {
             direction = Vector2.up;
             directionKeyUpdated = true;
@@ -79,6 +82,7 @@ public class Snake : MonoBehaviour
             0.0f
         );
 
+        // set to false so direction can be changed again
         directionKeyUpdated = false;
 
         GameManager.instance.incrementNumUpdates();
@@ -127,11 +131,13 @@ public class Snake : MonoBehaviour
         segments.Add(newSegment);
     }
 
+    // get direction of snake
     public Vector2 getDirection()
     {
         return this.direction;
     }
 
+    // set direction of snake
     public void setDirection(Vector2 direction)
     {
         this.direction = direction;

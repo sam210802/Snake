@@ -174,6 +174,7 @@ public class GameManager : MonoBehaviour
         this.rewinding = rewinding;
     }
 
+    // increments num updates by one
     public void incrementNumUpdates() {
         numUpdates += 1;
     }

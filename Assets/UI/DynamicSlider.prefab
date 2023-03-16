@@ -87,7 +87,7 @@ GameObject:
   - component: {fileID: 1513621423285519548}
   - component: {fileID: 1513621423285519550}
   m_Layer: 5
-  m_Name: MusicVolumeSlider
+  m_Name: Slider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -284,7 +284,8 @@ MonoBehaviour:
   mainTransform: {fileID: 1513621423755417547}
   textTransform: {fileID: 1513621424307597744}
   sliderTransform: {fileID: 1513621423285519548}
-  sliderMinWidth: 250
+  parentLayout: {fileID: 0}
+  sliderMinWidth: 200
   layoutGroup: {fileID: 1513621423755417549}
   sliders:
   - {fileID: 0}
@@ -376,8 +377,10 @@ GameObject:
   - component: {fileID: 1513621424307597749}
   - component: {fileID: 1513621424307597746}
   - component: {fileID: 1513621424307597747}
+  - component: {fileID: 872636838537593415}
+  - component: {fileID: 4194387303841675289}
   m_Layer: 5
-  m_Name: MusicVolumeText
+  m_Name: Text
   m_TagString: Text - Resizable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -514,3 +517,58 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_HorizontalFit: 2
   m_VerticalFit: 2
+--- !u!114 &872636838537593415
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1513621424307597745}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a9322d93b75200c47bee51bbefca1a60, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  defaultFontSize: 24
+  text: {fileID: 1513621424307597746}
+  parentLayout: {fileID: 1513621423755417547}
+--- !u!114 &4194387303841675289
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1513621424307597745}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 56eb0353ae6e5124bb35b17aff880f16, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_StringReference:
+    m_TableReference:
+      m_TableCollectionName: GUID:2649cabe78ad15441ada259f20ac3c04
+    m_TableEntryReference:
+      m_KeyId: 1501142945792
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  m_FormatArguments: []
+  m_UpdateString:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1513621424307597746}
+        m_TargetAssemblyTypeName: TMPro.TMP_Text, Unity.TextMeshPro
+        m_MethodName: set_text
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  references:
+    version: 2
+    RefIds: []

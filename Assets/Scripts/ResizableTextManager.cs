@@ -16,15 +16,20 @@ public class ResizableTextManager : MonoBehaviour
     [SerializeField]
     int defaultFontSize = 24;
 
+    string currentFontSize;
+    string currentText;
+
     [SerializeField]
     TMP_Text text;
 
     [SerializeField]
     private RectTransform parentLayout;
 
-    void Awake() {
-        StartCoroutine(coroutines());
+    bool active = false;
 
+    void Awake() {
+        currentFontSize = OptionsMenu.loadTextPrefs();
+        currentText = text.text;
     }
 
     void OnEnable() {
@@ -32,20 +37,33 @@ public class ResizableTextManager : MonoBehaviour
 
     }
 
-    void Start() {
-
+    void Update() {
+        // updates text font size if saved font size changed
+        if (currentFontSize != OptionsMenu.loadTextPrefs()) {
+            updateTextSizeCoroutine();
+            currentFontSize = OptionsMenu.loadTextPrefs();
+        }
+        // updates text font size if text changed
+        if (currentText != text.text) {
+            updateTextSizeCoroutine();
+            currentText = text.text;
+        }
     }
 
-    public void startCoroutines() {
+    private void updateTextSizeCoroutine() {
+        if (active) return;
         StartCoroutine(coroutines());
     }
 
+    // ensures text size is updated before the layout can be rebuilt
     public IEnumerator coroutines() {
+        active = true;
         yield return StartCoroutine(updateTextSize());
         yield return StartCoroutine(forceLayoutRebuild());
+        active = false;
     }
 
-    private IEnumerator updateTextSize() {
+    IEnumerator updateTextSize() {
         // break if file doesn't exist
         if (!File.Exists(textSizeFile)) yield break;
 
@@ -56,15 +74,7 @@ public class ResizableTextManager : MonoBehaviour
         yield return null;
     }
 
-    public static IEnumerator updateAllText() {
-        ResizableTextManager[] scripts = FindObjectsOfType<ResizableTextManager>();
-        foreach (ResizableTextManager script in scripts) {
-            script.startCoroutines();
-        }
-        yield return null;
-    }
-
-    private IEnumerator forceLayoutRebuild() {
+    IEnumerator forceLayoutRebuild() {
         LayoutRebuilder.ForceRebuildLayoutImmediate(parentLayout);
         yield return null;
     }

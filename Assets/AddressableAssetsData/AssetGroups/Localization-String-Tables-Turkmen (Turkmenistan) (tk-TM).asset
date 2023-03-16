@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: Localization-String-Tables-Turkmen (Turkmenistan) (tk-TM)
+  m_EditorClassIdentifier: 
+  m_GroupName: Localization-String-Tables-Turkmen (Turkmenistan) (tk-TM)
+  m_Data:
+    m_SerializedData: []
+  m_GUID: 7052fbbff03f8154bab36c9ef9840332
+  m_SerializeEntries: []
+  m_ReadOnly: 1
+  m_Settings: {fileID: 11400000, guid: 54067445796894840b9eba89bdf10d63, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: aa1f24e74cc9e3c4ab75bc34ec8c3019, type: 2}
+    - {fileID: 11400000, guid: fab6ec8f2e213024287cd96dfaead279, type: 2}

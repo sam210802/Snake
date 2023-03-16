@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: Localization-String-Tables-Tajik (Cyrillic) (tg-Cyrl)
+  m_EditorClassIdentifier: 
+  m_GroupName: Localization-String-Tables-Tajik (Cyrillic) (tg-Cyrl)
+  m_Data:
+    m_SerializedData: []
+  m_GUID: 47df3818ee72e984a86cff5f3db5ab37
+  m_SerializeEntries: []
+  m_ReadOnly: 1
+  m_Settings: {fileID: 11400000, guid: 54067445796894840b9eba89bdf10d63, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: bc205df335b88524fb96c50be09626fb, type: 2}
+    - {fileID: 11400000, guid: fed8ced8126cf6d479a3bc2e00a5c578, type: 2}
