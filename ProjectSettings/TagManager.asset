@@ -11,6 +11,8 @@ TagManager:
   - Score
   - UI
   - HighScore
+  - Text - Resizable
+  - Hoverable
   layers:
   - Default
   - TransparentFX
