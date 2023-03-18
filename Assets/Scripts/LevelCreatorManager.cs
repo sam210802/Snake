@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class LevelCreatorManager : MonoBehaviour
 {
@@ -12,12 +14,11 @@ public class LevelCreatorManager : MonoBehaviour
 
     bool created = false;
 
-    [SerializeField]
-    bool temp = false;
-
     private GameObject gameArea;
     List<Transform> walls;
     public Transform wallPrefab;
+
+    public ToolTip toolTipScript;
 
     void Awake() {
         walls = new List<Transform>();
@@ -32,9 +33,7 @@ public class LevelCreatorManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetMouseButtonUp(0)) {
-            mouseOver();
-        }
+
     }
 
     void OnEnable() {
@@ -116,44 +115,6 @@ public class LevelCreatorManager : MonoBehaviour
         wall.position = new Vector3(0, 0, 0);
         wall.tag = "Hoverable";
         walls.Add(wall);
-    }
-
-    GameObject mouseOver() {
-        Vector3 mousePos = Input.mousePosition;
-
-        GameObject[] gameObjects = GameObject.FindGameObjectsWithTag("Hoverable");
-        Vector3[] screenPos = new Vector3[4];
-        Vector3[] boundingPos = new Vector3[4];
-
-        // find pos of all four corners
-        foreach (GameObject gameObject in gameObjects) {
-            boundingPos[0] = new Vector3(gameObject.transform.position.x - gameObject.transform.localScale.x/2,
-                                            gameObject.transform.position.y + gameObject.transform.localScale.y/2, mousePos.z);
-            boundingPos[1] = new Vector3(gameObject.transform.position.x - gameObject.transform.localScale.x/2,
-                                            gameObject.transform.position.y - gameObject.transform.localScale.y/2, mousePos.z);
-            boundingPos[2] = new Vector3(gameObject.transform.position.x + gameObject.transform.localScale.x/2,
-                                            gameObject.transform.position.y + gameObject.transform.localScale.y/2, mousePos.z);
-            boundingPos[3] = new Vector3(gameObject.transform.position.x + gameObject.transform.localScale.x/2,
-                                            gameObject.transform.position.y - gameObject.transform.localScale.y/2, mousePos.z);
-
-            // convert world pos to screen pos
-            for (int i = 0; i < boundingPos.Length; i++) {
-                screenPos[i] = Camera.main.WorldToScreenPoint(boundingPos[i]);
-            }
-
-            // checking if mouse inside of object bounds
-            float maxX = Math.Max(screenPos[0].x, screenPos[2].x);
-            float minX = Math.Min(screenPos[0].x, screenPos[2].x);
-
-            float maxY = Math.Max(screenPos[0].y, screenPos[1].y);
-            float minY = Math.Min(screenPos[0].y, screenPos[1].y);
-
-            if (mousePos.x > minX && mousePos.x < maxX && mousePos.y > minY && mousePos.y < maxY) {
-                Debug.Log(gameObject.name);
-            }
-        }
-
-        return null;
     }
 
     // parameter has to be a string so editor allows for dynamic onValueChange
