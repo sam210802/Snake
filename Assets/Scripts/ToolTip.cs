@@ -64,22 +64,28 @@ public class ToolTip : MonoBehaviour
     }
 
     // parameter has to be string for on change to be dynamic
-    public void setObjectHeight(string height) {
-        if (Int32.Parse(height) <= 0) {
+    public void setObjectHeight(string stringHeight) {
+        int height = Int32.Parse(stringHeight);
+        int invert = 1;
+        if (height == 0) {
             return;
+        } else if (height < 0) {
+            invert = -1;
         }
 
         float oldScaleY = attatchedObject.transform.localScale.y;
     
         // changes height of object to user inputted height
         attatchedObject.transform.localScale = 
-            new Vector2(attatchedObject.transform.localScale.x, Int32.Parse(height));
+            new Vector2(attatchedObject.transform.localScale.x, height * invert);
     
         float newScaleY = attatchedObject.transform.localScale.y;
+
+        float scaleDifference = (newScaleY - oldScaleY) * invert;
     
         // keeps the walls position but extends in the y/up direction
         attatchedObject.transform.position = new Vector3(attatchedObject.transform.position.x,
-                                                attatchedObject.transform.position.y + ((newScaleY - oldScaleY) / 2),
+                                                attatchedObject.transform.position.y + (scaleDifference / 2),
                                                 attatchedObject.transform.position.z);
     }
 }
