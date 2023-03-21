@@ -12,13 +12,18 @@ public class LevelCreatorManager : MonoBehaviour
 
     int offset = 3;
 
-    bool created = false;
+    bool createdBoard = false;
+    bool createdGrid = false;
 
     private GameObject gameArea;
+    private GameObject gridArea;
     List<Transform> walls;
     public Transform wallPrefab;
 
     public ToolTip toolTipScript;
+
+    [SerializeField]
+    Transform gridPrefab;
 
     void Awake() {
         walls = new List<Transform>();
@@ -28,6 +33,7 @@ public class LevelCreatorManager : MonoBehaviour
     void Start()
     {
         createBoard();
+        createGrid();
     }
 
     // Update is called once per frame
@@ -41,7 +47,7 @@ public class LevelCreatorManager : MonoBehaviour
     }
 
     void createBoard() {
-        if (created) {
+        if (createdBoard) {
             updateBoard();
             return;
         }
@@ -75,11 +81,40 @@ public class LevelCreatorManager : MonoBehaviour
                     break;
             }
         }
-        created = true;
+        createdBoard = true;
+    }
+
+    void createGrid()
+    {
+        if (createdGrid) {
+            updateGrid();
+            return;
+        }
+        gridArea = new GameObject();
+        gridArea.name = "GridArea";
+        Transform grid;
+
+        for (int i = 0; i < gameWidth; i++) {
+            grid = Instantiate(gridPrefab, gridArea.transform);
+            grid.position = new Vector3(0, (gameWidth/2)-i-0.5f, -1);
+            grid.localScale = new Vector3(gameWidth+1, 0.05f, 0.05f);
+            grid.name = String.Format("Grid - X ({0})", i);
+        }
+
+        for (int i = 0; i < gameWidth; i++) {
+            grid = Instantiate(gridPrefab, gridArea.transform);
+            grid.position = new Vector3((gameHeight/2)-i-0.5f, 0, -1);
+            grid.localScale = new Vector3(0.05f, gameHeight+1, 0.05f);
+            grid.name = String.Format("Grid - Y ({0})", i);
+        }
+    }
+
+    void updateGrid() {
+
     }
 
     void updateBoard() {
-        if (!created) {
+        if (!createdBoard) {
             createBoard();
             return;
         }

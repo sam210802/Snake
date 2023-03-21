@@ -21,10 +21,10 @@ public class Wall : MonoBehaviour
     void OnMouseUp() {
         if (!levelCreatorManager) return;
 
+        // snap to grid
+        transform.position = new Vector2(Mathf.RoundToInt(transform.position.x), Mathf.RoundToInt(transform.position.y));
+        // attatch this wall to the tooltip object
         levelCreatorManager.toolTipScript.setAttatchedObject(gameObject);
-
-        // TODO
-        // snap wall position to grid
     }
 
     void OnMouseDrag() {
