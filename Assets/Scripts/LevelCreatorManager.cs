@@ -21,6 +21,7 @@ public class LevelCreatorManager : MonoBehaviour
     public Transform wallPrefab;
 
     public ToolTip toolTipScript;
+    public TransformTip transformTipScript;
 
     [SerializeField]
     Transform gridPrefab;
@@ -96,14 +97,14 @@ public class LevelCreatorManager : MonoBehaviour
 
         for (int i = 0; i < gameWidth; i++) {
             grid = Instantiate(gridPrefab, gridArea.transform);
-            grid.position = new Vector3(0, (gameWidth/2)-i-0.5f, -1);
+            grid.position = new Vector3(0, (gameWidth/2)-i-0.5f, 1);
             grid.localScale = new Vector3(gameWidth+1, 0.05f, 0.05f);
             grid.name = String.Format("Grid - X ({0})", i);
         }
 
         for (int i = 0; i < gameWidth; i++) {
             grid = Instantiate(gridPrefab, gridArea.transform);
-            grid.position = new Vector3((gameHeight/2)-i-0.5f, 0, -1);
+            grid.position = new Vector3((gameHeight/2)-i-0.5f, 0, 1);
             grid.localScale = new Vector3(0.05f, gameHeight+1, 0.05f);
             grid.name = String.Format("Grid - Y ({0})", i);
         }

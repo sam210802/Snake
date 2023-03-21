@@ -32,27 +32,33 @@ public class ToolTip : MonoBehaviour
         setTitle(attatchedObject.name);
         setWidthText(attatchedObject.transform.localScale.x + "");
         setHeightText(attatchedObject.transform.localScale.y + "");
-        // gameobject script is attatched to
+        // the gameobject the script is attatched to
         this.gameObject.transform.position = Camera.main.WorldToScreenPoint(gameObject.transform.position);
         this.gameObject.SetActive(true);
     }
 
     // parameter has to be string for on change to be dynamic
-    public void setObjectWidth(string width) {
-        if (Int32.Parse(width) <= 0) {
+    public void setObjectWidth(string stringWidth) {
+        int width = Int32.Parse(stringWidth);
+        int invert = 1;
+        if (width == 0) {
             return;
+        } else if (width < 0) {
+            invert = -1;
         }
 
         float oldScaleX = attatchedObject.transform.localScale.x;
 
         // changes width of object to user inputted width
         attatchedObject.transform.localScale = 
-            new Vector2(Int32.Parse(width), attatchedObject.transform.localScale.y);
+            new Vector2(width * invert, attatchedObject.transform.localScale.y);
 
         float newScaleX = attatchedObject.transform.localScale.x;
 
+        float scaleDifference = (newScaleX - oldScaleX) * invert;
+
         // keeps the walls position but extends in the x/right direction
-        attatchedObject.transform.position = new Vector3(attatchedObject.transform.position.x + ((newScaleX - oldScaleX) / 2),
+        attatchedObject.transform.position = new Vector3(attatchedObject.transform.position.x + (scaleDifference / 2),
                                                 attatchedObject.transform.position.y,
                                                 attatchedObject.transform.position.z);
     }
