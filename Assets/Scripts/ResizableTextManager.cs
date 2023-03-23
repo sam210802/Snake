@@ -23,9 +23,12 @@ public class ResizableTextManager : MonoBehaviour
     TMP_Text text;
 
     [SerializeField]
-    private RectTransform parentLayout;
+    private List<RectTransform> parentLayouts;
 
     bool active = false;
+
+    // true if text or font changed since last update
+    public bool textUpdated = false;
 
     void Awake() {
         currentFontSize = OptionsMenu.loadTextPrefs();
@@ -38,15 +41,18 @@ public class ResizableTextManager : MonoBehaviour
     }
 
     void Update() {
+        textUpdated = false;
         // updates text font size if saved font size changed
         if (currentFontSize != OptionsMenu.loadTextPrefs()) {
             updateTextSizeCoroutine();
             currentFontSize = OptionsMenu.loadTextPrefs();
+            textUpdated = true;
         }
         // updates text font size if text changed
         if (currentText != text.text) {
             updateTextSizeCoroutine();
             currentText = text.text;
+            textUpdated = true;
         }
     }
 
@@ -75,7 +81,9 @@ public class ResizableTextManager : MonoBehaviour
     }
 
     IEnumerator forceLayoutRebuild() {
-        LayoutRebuilder.ForceRebuildLayoutImmediate(parentLayout);
+        foreach (RectTransform parent in parentLayouts) {
+            LayoutRebuilder.ForceRebuildLayoutImmediate(parent);
+        }
         yield return null;
     }
 }

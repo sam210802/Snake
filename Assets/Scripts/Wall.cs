@@ -49,4 +49,22 @@ public class Wall : MonoBehaviour
     private Vector3 GetMouseWorldPos() {
         return Camera.main.ScreenToWorldPoint(Input.mousePosition);
     }
+
+    public WallData toJson() {
+        WallData data = new WallData();
+        data.name = gameObject.name;
+        data.tag = tag;
+        data.scale = transform.localScale;
+        data.position = transform.position;
+
+        return data;
+    }
+}
+
+[Serializable]
+public class WallData {
+    public string name;
+    public string tag;
+    public Vector3 scale;
+    public Vector3 position;
 }

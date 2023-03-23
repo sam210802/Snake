@@ -61,6 +61,9 @@ public class ToolTip : MonoBehaviour
         attatchedObject.transform.position = new Vector3(attatchedObject.transform.position.x + (scaleDifference / 2),
                                                 attatchedObject.transform.position.y,
                                                 attatchedObject.transform.position.z);
+
+        // updates tooltip text to new width
+        setWidthText(attatchedObject.transform.localScale.x.ToString());
     }
 
     // parameter has to be string for on change to be dynamic
@@ -87,5 +90,8 @@ public class ToolTip : MonoBehaviour
         attatchedObject.transform.position = new Vector3(attatchedObject.transform.position.x,
                                                 attatchedObject.transform.position.y + (scaleDifference / 2),
                                                 attatchedObject.transform.position.z);
+
+        // updates tooltip text to new height
+        setHeightText(attatchedObject.transform.localScale.y.ToString());
     }
 }

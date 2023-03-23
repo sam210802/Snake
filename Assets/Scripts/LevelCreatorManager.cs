@@ -1,14 +1,18 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class LevelCreatorManager : MonoBehaviour
 {
-    // even only
-    int gameWidth = 10;
-    int gameHeight = 10;
+    // odd only as game area has to be centered
+    // default values on start
+    private int gameWidth = 9;
+    private int gameHeight = 9;
+    private string levelName = "defaultLevel";
 
     int offset = 3;
 
@@ -23,8 +27,19 @@ public class LevelCreatorManager : MonoBehaviour
     public ToolTip toolTipScript;
     public TransformTip transformTipScript;
 
+    private string saveLocation = "Assets/Data/Levels";
+
     [SerializeField]
     Transform gridPrefab;
+
+    [SerializeField]
+    TMP_InputField widthInput;
+    
+    [SerializeField]
+    TMP_InputField heightInput;
+
+    [SerializeField]
+    TMP_InputField levelNameInput;
 
     void Awake() {
         walls = new List<Transform>();
@@ -33,8 +48,10 @@ public class LevelCreatorManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        widthInput.text = gameWidth.ToString();
+        heightInput.text = gameHeight.ToString();
+        levelNameInput.text = levelName;
         createBoard();
-        createGrid();
     }
 
     // Update is called once per frame
@@ -83,35 +100,42 @@ public class LevelCreatorManager : MonoBehaviour
             }
         }
         createdBoard = true;
+
+        createGrid();
     }
 
     void createGrid()
     {
-        if (createdGrid) {
-            updateGrid();
-            return;
-        }
-        gridArea = new GameObject();
+        destroyGrid();
+
+        if (!gridArea) gridArea = new GameObject();
         gridArea.name = "GridArea";
         Transform grid;
 
-        for (int i = 0; i < gameWidth; i++) {
+        for (int i = 0; i < gameHeight; i++) {
             grid = Instantiate(gridPrefab, gridArea.transform);
-            grid.position = new Vector3(0, (gameWidth/2)-i-0.5f, 1);
+            grid.position = new Vector3(0, (gameHeight/2)-i-0.5f, 1);
             grid.localScale = new Vector3(gameWidth+1, 0.05f, 0.05f);
             grid.name = String.Format("Grid - X ({0})", i);
         }
 
         for (int i = 0; i < gameWidth; i++) {
             grid = Instantiate(gridPrefab, gridArea.transform);
-            grid.position = new Vector3((gameHeight/2)-i-0.5f, 0, 1);
+            grid.position = new Vector3((gameWidth/2)-i-0.5f, 0, 1);
             grid.localScale = new Vector3(0.05f, gameHeight+1, 0.05f);
             grid.name = String.Format("Grid - Y ({0})", i);
         }
+
+        createdGrid = true;
     }
 
-    void updateGrid() {
+    void destroyGrid() {
+        if (!createdGrid) return;
 
+        Destroy(gridArea);
+        gridArea = null;
+
+        createdGrid = false;
     }
 
     void updateBoard() {
@@ -143,6 +167,8 @@ public class LevelCreatorManager : MonoBehaviour
                     break;
             }
         }
+
+        createGrid();
     }
 
     public void addWall() {
@@ -153,15 +179,106 @@ public class LevelCreatorManager : MonoBehaviour
         walls.Add(wall);
     }
 
+    public void addWall(String name, Vector3 localScale, Vector3 position, String tag) {
+        Transform wall = Instantiate(wallPrefab, gameArea.transform);
+        wall.name = name;
+        wall.localScale = localScale;
+        wall.position = position;
+        wall.tag = tag;
+        walls.Add(wall);
+    }
+
+    public void save() {
+        Directory.CreateDirectory(saveLocation);
+        String fileLocation = saveLocation + "/" + levelName + ".json";
+        if (!File.Exists(fileLocation)) {
+            string dataString = JsonUtility.ToJson(toJson());
+            File.WriteAllText(fileLocation, dataString);
+        }
+    }
+
+    public void load(String fileName) {
+        Debug.Log("Loading");
+        String fileLocation = saveLocation + "/" + fileName;
+        Debug.Log("Location: " + fileLocation);
+        if (!File.Exists(fileLocation)) return;
+        Debug.Log("File Exits");
+
+        fromJson(File.ReadAllText(fileLocation));
+    }
+
+    public LevelData toJson() {
+        LevelData data = new LevelData();
+        data.width = gameWidth;
+        data.height = gameHeight;
+
+        foreach (Transform wall in walls) {
+            data.walls.Add(wall.GetComponent<Wall>().toJson());
+        }
+        
+        return data;
+    }
+
+    public void fromJson(String file) {
+        LevelData data = JsonUtility.FromJson<LevelData>(file);
+
+        setGameWidth(data.width);
+        setGameHeight(data.height);
+
+        createBoard();
+
+        // delete old walls
+        foreach (Transform child in walls) {
+            Destroy(child.gameObject);
+        }
+        walls.Clear();
+
+        // create new walls
+        foreach (WallData wall in data.walls) {
+            addWall(wall.name, wall.scale, wall.position, wall.tag);
+        }
+    }
+
+    public void backToMainMenu() {
+        save();
+        SceneManager.LoadScene(0);
+    }
+
+    public void setGameWidth(int width) {
+        gameWidth = width;
+        updateBoard();
+    }
+
     // parameter has to be a string so editor allows for dynamic onValueChange
     public void setGameWidth(string width) {
-        gameWidth = Int32.Parse(width);
+        int.TryParse(width, out gameWidth);
+        updateBoard();
+    }
+
+    public void setGameHeight(int height) {
+        gameHeight = height;
         updateBoard();
     }
 
     // parameter has to be a string so editor allows for dynamic onValueChange
     public void setGameHeight(string height) {
-        gameHeight = Int32.Parse(height);
+        int.TryParse(height, out gameHeight);
         updateBoard();
     }
+
+    public void setLevelName(string name) {
+        levelName = name;
+    }
+
+    public string getSaveLocation()
+    {
+        return this.saveLocation;
+    }
+}
+
+[Serializable]
+public class LevelData {
+    public int width;
+    public int height;
+    public List<WallData> walls = new List<WallData>();
 }
