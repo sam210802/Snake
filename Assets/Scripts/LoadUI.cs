@@ -11,14 +11,23 @@ public class LoadUI : MonoBehaviour
     LevelCreatorManager levelCreatorManager;
 
     [SerializeField]
+    GameObject textPrefab;
+
+    [SerializeField]
     GameObject buttonPrefab;
 
     void OnEnable() {
-        DirectoryInfo info = new DirectoryInfo(levelCreatorManager.getSaveLocation());
-        FileInfo[] fileInfo = info.GetFiles();
-        foreach (FileInfo file in fileInfo) {
-            if (file.Extension == ".json") {
-                createButton(file.Name);
+        GameObject titleText = Instantiate(textPrefab, transform);
+        titleText.GetComponent<TMP_Text>().text = "Levels";
+        titleText.GetComponent<ResizableTextManager>().addParentLayout(transform.parent.GetComponent<RectTransform>());
+
+        if (Directory.Exists(levelCreatorManager.getSaveLocation())) {
+            DirectoryInfo info = new DirectoryInfo(levelCreatorManager.getSaveLocation());
+            FileInfo[] fileInfo = info.GetFiles();
+            foreach (FileInfo file in fileInfo) {
+                if (file.Extension == ".json") {
+                    createButton(file.Name);
+                }
             }
         }
         GameObject exitButton = Instantiate(buttonPrefab, transform);
@@ -29,6 +38,7 @@ public class LoadUI : MonoBehaviour
     void createButton(string name) {
         GameObject button = Instantiate(buttonPrefab, transform);
         button.GetComponentInChildren<TMP_Text>().text = name;
+        button.GetComponentInChildren<ResizableTextManager>().defaultFontSizePropery = 16;
         button.GetComponent<Button>().onClick.AddListener(() => {
             levelCreatorManager.load(name);
             exit();});

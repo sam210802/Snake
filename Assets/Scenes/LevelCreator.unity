@@ -298,6 +298,7 @@ MonoBehaviour:
   - {fileID: 1374114741}
   - {fileID: 251582710}
   textUpdated: 0
+  forceUpdate: 0
 --- !u!114 &61697011
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -689,6 +690,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   levelCreatorManager: {fileID: 1219963359}
+  textPrefab: {fileID: 9109609152310704405, guid: dc6467c3c14d9cf4faef025b55561813, type: 3}
   buttonPrefab: {fileID: 5785581861082051233, guid: 4a0d85d052902e24789d4b9e6cb62a6c, type: 3}
 --- !u!114 &514105714
 MonoBehaviour:
@@ -2018,6 +2020,7 @@ MonoBehaviour:
   - {fileID: 1873450842}
   - {fileID: 251582710}
   textUpdated: 0
+  forceUpdate: 0
 --- !u!114 &1563303160
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2173,6 +2176,7 @@ MonoBehaviour:
   - {fileID: 1818143760}
   - {fileID: 251582710}
   textUpdated: 0
+  forceUpdate: 0
 --- !u!114 &1577409077
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2783,6 +2787,7 @@ MonoBehaviour:
   - {fileID: 944290864}
   - {fileID: 251582710}
   textUpdated: 0
+  forceUpdate: 0
 --- !u!114 &2113055621
 MonoBehaviour:
   m_ObjectHideFlags: 0

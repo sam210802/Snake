@@ -27,7 +27,7 @@ public class LevelCreatorManager : MonoBehaviour
     public ToolTip toolTipScript;
     public TransformTip transformTipScript;
 
-    private string saveLocation = "Assets/Data/Levels";
+    private string saveLocation;
 
     [SerializeField]
     Transform gridPrefab;
@@ -43,6 +43,7 @@ public class LevelCreatorManager : MonoBehaviour
 
     void Awake() {
         walls = new List<Transform>();
+        saveLocation = Application.persistentDataPath + "/Data/Levels";
     }
 
     // Start is called before the first frame update
@@ -198,11 +199,8 @@ public class LevelCreatorManager : MonoBehaviour
     }
 
     public void load(String fileName) {
-        Debug.Log("Loading");
         String fileLocation = saveLocation + "/" + fileName;
-        Debug.Log("Location: " + fileLocation);
         if (!File.Exists(fileLocation)) return;
-        Debug.Log("File Exits");
 
         fromJson(File.ReadAllText(fileLocation));
     }

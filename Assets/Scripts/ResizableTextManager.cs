@@ -14,7 +14,16 @@ public class ResizableTextManager : MonoBehaviour
     static string textSizeFile = "Assets/Data/textSize.json";
     
     [SerializeField]
-    int defaultFontSize = 24;
+    private int defaultFontSize = 24;
+
+    public int defaultFontSizePropery {
+        get {
+            return defaultFontSize;
+        } set {
+            defaultFontSize = value;
+            updateTextSize();
+        }
+    }
 
     string currentFontSize;
     string currentText;
@@ -29,6 +38,7 @@ public class ResizableTextManager : MonoBehaviour
 
     // true if text or font changed since last update
     public bool textUpdated = false;
+    public bool forceUpdate = false;
 
     void Awake() {
         currentFontSize = OptionsMenu.loadTextPrefs();
@@ -36,54 +46,49 @@ public class ResizableTextManager : MonoBehaviour
     }
 
     void OnEnable() {
-        StartCoroutine(coroutines());
+        updateTextSize();
 
     }
 
     void Update() {
         textUpdated = false;
+
+        // forces text to update
+        if (forceUpdate) {
+            updateTextSize();
+            forceUpdate = false;
+        }
         // updates text font size if saved font size changed
         if (currentFontSize != OptionsMenu.loadTextPrefs()) {
-            updateTextSizeCoroutine();
+            updateTextSize();
             currentFontSize = OptionsMenu.loadTextPrefs();
-            textUpdated = true;
         }
         // updates text font size if text changed
         if (currentText != text.text) {
-            updateTextSizeCoroutine();
+            updateTextSize();
             currentText = text.text;
-            textUpdated = true;
         }
     }
 
-    private void updateTextSizeCoroutine() {
-        if (active) return;
-        StartCoroutine(coroutines());
-    }
-
-    // ensures text size is updated before the layout can be rebuilt
-    public IEnumerator coroutines() {
-        active = true;
-        yield return StartCoroutine(updateTextSize());
-        yield return StartCoroutine(forceLayoutRebuild());
-        active = false;
-    }
-
-    IEnumerator updateTextSize() {
+    public void updateTextSize() {
         // break if file doesn't exist
-        if (!File.Exists(textSizeFile)) yield break;
+        if (!File.Exists(textSizeFile)) return;
 
         string fileContent = File.ReadAllText(textSizeFile);
         Dictionary<string, float> textSize = JsonConvert.DeserializeObject<Dictionary<string, float>>(fileContent);
 
         text.fontSize = defaultFontSize * textSize[OptionsMenu.loadTextPrefs()];
-        yield return null;
+
+        forceLayoutRebuild();
     }
 
-    IEnumerator forceLayoutRebuild() {
+    void forceLayoutRebuild() {
         foreach (RectTransform parent in parentLayouts) {
             LayoutRebuilder.ForceRebuildLayoutImmediate(parent);
         }
-        yield return null;
+    }
+
+    public void addParentLayout(RectTransform parent) {
+        parentLayouts.Add(parent);
     }
 }

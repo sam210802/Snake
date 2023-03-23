@@ -38,37 +38,30 @@ public class DynamicSizeSliderManager : MonoBehaviour
     }
 
     void OnEnable() {
-        startUpdateSizeCoroutine();
+        update();
     }
 
     void Update() {
         // update slider size if font has changed size
         if (textComponent.fontSize != currentFontSize) {
             currentFontSize = textComponent.fontSize;
-            startUpdateSizeCoroutine();
+            update();
         }
         // update slider size if text has changed
         if (textComponent.text != currentText) {
             currentText = textComponent.text;
-            startUpdateSizeCoroutine();
+            update();
         }
     }
 
-    public void startUpdateSizeCoroutine() {
-        if (active) return;
-        StartCoroutine(coroutines());
+    private void update() {
+        textTransform.GetComponent<ResizableTextManager>().updateTextSize();
+        updateSize();
+        normaliseSlider();
+        forceLayoutRebuild();
     }
 
-    private IEnumerator coroutines() {
-        active = true;
-        yield return StartCoroutine(textTransform.GetComponent<ResizableTextManager>().coroutines());
-        yield return StartCoroutine(updateSize());
-        yield return StartCoroutine(normaliseSlider());
-        yield return StartCoroutine(forceLayoutRebuild());
-        active = false;
-    }
-
-    private IEnumerator updateSize() {
+    private void updateSize() {
         if (textTransform.rect.width > sliderMinWidth) {
             // makes slider width equal to text width
             sliderTransform.sizeDelta = new Vector2(textTransform.rect.width, (textTransform.rect.width/sliderTransform.rect.width)*sliderTransform.rect.height);
@@ -80,12 +73,11 @@ public class DynamicSizeSliderManager : MonoBehaviour
             // makes parent fit content
             mainTransform.sizeDelta = new Vector2(sliderMinWidth, (textTransform.rect.height+layoutGroup.spacing+sliderTransform.rect.height));
         }
-        yield return null;
     }
 
     // sets all slider sizes to same as largest slider size
-    private IEnumerator normaliseSlider() {
-        if (sliders == null) yield break;
+    private void normaliseSlider() {
+        if (sliders == null) return;
 
         foreach (Slider slider in sliders) {
             float sliderWidth = slider.GetComponent<RectTransform>().rect.width;
@@ -95,12 +87,10 @@ public class DynamicSizeSliderManager : MonoBehaviour
                 mainTransform.sizeDelta = new Vector2(Mathf.Max(sliderWidth, textTransform.rect.width), (textTransform.rect.height+layoutGroup.spacing+sliderTransform.rect.height));
             }
         }
-        yield return null;
     }
 
     // forces parent layout rebuild
-    private IEnumerator forceLayoutRebuild() {
+    private void forceLayoutRebuild() {
         LayoutRebuilder.ForceRebuildLayoutImmediate(parentLayout);
-        yield return null;
     }
 }
