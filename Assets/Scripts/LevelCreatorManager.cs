@@ -10,11 +10,30 @@ public class LevelCreatorManager : MonoBehaviour
 {
     // odd only as game area has to be centered
     // default values on start
+    // max value to avoid game freezing/crashing
     private int gameWidth = 9;
+    private int maxWidth = 100;
+    public int gameWidthProperty {
+        get {
+            return gameWidth;
+        } set {
+            gameWidth = Mathf.Min(maxWidth, value);
+            widthInput.text = gameWidth.ToString();
+        }
+    }
     private int gameHeight = 9;
+    private int maxHeight = 100;
+    public int gameHeightProperty {
+        get {
+            return gameHeight;
+        } set {
+            gameHeight = Mathf.Min(maxHeight, value);
+            heightInput.text = gameHeight.ToString();
+        }
+    }
     private string levelName = "defaultLevel";
 
-    int offset = 3;
+    int offset = 2;
 
     bool createdBoard = false;
     bool createdGrid = false;
@@ -49,8 +68,8 @@ public class LevelCreatorManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        widthInput.text = gameWidth.ToString();
-        heightInput.text = gameHeight.ToString();
+        widthInput.text = gameWidthProperty.ToString();
+        heightInput.text = gameHeightProperty.ToString();
         levelNameInput.text = levelName;
         createBoard();
     }
@@ -79,23 +98,23 @@ public class LevelCreatorManager : MonoBehaviour
             wall = Instantiate(wallPrefab, gameArea.transform);
             switch (i) {
                 case 0:
-                    wall.localScale = new Vector3(1, gameHeight+offset, 1);
-                    wall.position = new Vector3(-((gameWidth/2) + 1), 0, 0);
+                    wall.localScale = new Vector3(1, gameHeightProperty+offset, 1);
+                    wall.position = new Vector3(-((gameWidthProperty/2) + 1), 0, 0);
                     wall.name = "Wall - Left";
                     break;
                 case 1:
-                    wall.localScale = new Vector3(gameWidth+offset, 1, 1);
-                    wall.position = new Vector3(0, (gameHeight/2) + 1, 0);
+                    wall.localScale = new Vector3(gameWidthProperty+offset, 1, 1);
+                    wall.position = new Vector3(0, (gameHeightProperty/2) + 1, 0);
                     wall.name = "Wall - Top";
                     break;
                 case 2:
-                    wall.localScale = new Vector3(1, gameHeight+offset, 1);
-                    wall.position = new Vector3((gameWidth/2) + 1, 0, 0);
+                    wall.localScale = new Vector3(1, gameHeightProperty+offset, 1);
+                    wall.position = new Vector3((gameWidthProperty/2) + 1, 0, 0);
                     wall.name = "Wall - Right";
                     break;
                 case 3:
-                    wall.localScale = new Vector3(gameWidth+offset, 1, 1);
-                    wall.position = new Vector3(0, -((gameHeight/2) + 1), 0);
+                    wall.localScale = new Vector3(gameWidthProperty+offset, 1, 1);
+                    wall.position = new Vector3(0, -((gameHeightProperty/2) + 1), 0);
                     wall.name = "Wall - Bottom";
                     break;
             }
@@ -113,17 +132,17 @@ public class LevelCreatorManager : MonoBehaviour
         gridArea.name = "GridArea";
         Transform grid;
 
-        for (int i = 0; i < gameHeight; i++) {
+        for (int i = 0; i < gameHeightProperty; i++) {
             grid = Instantiate(gridPrefab, gridArea.transform);
-            grid.position = new Vector3(0, (gameHeight/2)-i-0.5f, 1);
-            grid.localScale = new Vector3(gameWidth+1, 0.05f, 0.05f);
+            grid.position = new Vector3(0, (gameHeightProperty/2)-i-0.5f, 1);
+            grid.localScale = new Vector3(gameWidthProperty+1, 0.05f, 0.05f);
             grid.name = String.Format("Grid - X ({0})", i);
         }
 
-        for (int i = 0; i < gameWidth; i++) {
+        for (int i = 0; i < gameWidthProperty; i++) {
             grid = Instantiate(gridPrefab, gridArea.transform);
-            grid.position = new Vector3((gameWidth/2)-i-0.5f, 0, 1);
-            grid.localScale = new Vector3(0.05f, gameHeight+1, 0.05f);
+            grid.position = new Vector3((gameWidthProperty/2)-i-0.5f, 0, 1);
+            grid.localScale = new Vector3(0.05f, gameHeightProperty+1, 0.05f);
             grid.name = String.Format("Grid - Y ({0})", i);
         }
 
@@ -151,20 +170,20 @@ public class LevelCreatorManager : MonoBehaviour
             wall = gameArea.GetComponent<Transform>().GetChild(i).transform;
             switch (i) {
                 case 0:
-                    wall.localScale = new Vector3(1, gameHeight+offset, 1);
-                    wall.position = new Vector3(-((gameWidth/2) + 1), 0, 0);
+                    wall.localScale = new Vector3(1, gameHeightProperty+offset, 1);
+                    wall.position = new Vector3(-((gameWidthProperty/2) + 1), 0, 0);
                     break;
                 case 1:
-                    wall.localScale = new Vector3(gameWidth+offset, 1, 1);
-                    wall.position = new Vector3(0, (gameHeight/2) + 1, 0);
+                    wall.localScale = new Vector3(gameWidthProperty+offset, 1, 1);
+                    wall.position = new Vector3(0, (gameHeightProperty/2) + 1, 0);
                     break;
                 case 2:
-                    wall.localScale = new Vector3(1, gameHeight+offset, 1);
-                    wall.position = new Vector3((gameWidth/2) + 1, 0, 0);
+                    wall.localScale = new Vector3(1, gameHeightProperty+offset, 1);
+                    wall.position = new Vector3((gameWidthProperty/2) + 1, 0, 0);
                     break;
                 case 3:
-                    wall.localScale = new Vector3(gameWidth+offset, 1, 1);
-                    wall.position = new Vector3(0, -((gameHeight/2) + 1), 0);
+                    wall.localScale = new Vector3(gameWidthProperty+offset, 1, 1);
+                    wall.position = new Vector3(0, -((gameHeightProperty/2) + 1), 0);
                     break;
             }
         }
@@ -207,8 +226,8 @@ public class LevelCreatorManager : MonoBehaviour
 
     public LevelData toJson() {
         LevelData data = new LevelData();
-        data.width = gameWidth;
-        data.height = gameHeight;
+        data.width = gameWidthProperty;
+        data.height = gameHeightProperty;
 
         foreach (Transform wall in walls) {
             data.walls.Add(wall.GetComponent<Wall>().toJson());
@@ -243,24 +262,28 @@ public class LevelCreatorManager : MonoBehaviour
     }
 
     public void setGameWidth(int width) {
-        gameWidth = width;
+        gameWidthProperty = width;
         updateBoard();
     }
 
     // parameter has to be a string so editor allows for dynamic onValueChange
     public void setGameWidth(string width) {
-        int.TryParse(width, out gameWidth);
+        int newWidth = gameWidthProperty;
+        int.TryParse(width, out newWidth);
+        gameWidthProperty = newWidth;
         updateBoard();
     }
 
     public void setGameHeight(int height) {
-        gameHeight = height;
+        gameHeightProperty = height;
         updateBoard();
     }
 
     // parameter has to be a string so editor allows for dynamic onValueChange
     public void setGameHeight(string height) {
-        int.TryParse(height, out gameHeight);
+        int newHeight = gameHeightProperty;
+        int.TryParse(height, out newHeight);
+        gameHeightProperty = newHeight;
         updateBoard();
     }
 

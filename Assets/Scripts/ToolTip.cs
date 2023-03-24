@@ -37,25 +37,20 @@ public class ToolTip : MonoBehaviour
         this.gameObject.SetActive(true);
     }
 
-    // parameter has to be string for on change to be dynamic
-    public void setObjectWidth(string stringWidth) {
-        int width = Int32.Parse(stringWidth);
-        int invert = 1;
+    public void setObjectWidth(int width) {
         if (width == 0) {
             return;
-        } else if (width < 0) {
-            invert = -1;
         }
 
         float oldScaleX = attatchedObject.transform.localScale.x;
 
         // changes width of object to user inputted width
         attatchedObject.transform.localScale = 
-            new Vector2(width * invert, attatchedObject.transform.localScale.y);
+            new Vector2(width, attatchedObject.transform.localScale.y);
 
         float newScaleX = attatchedObject.transform.localScale.x;
 
-        float scaleDifference = (newScaleX - oldScaleX) * invert;
+        float scaleDifference = newScaleX - oldScaleX;
 
         // keeps the walls position but extends in the x/right direction
         attatchedObject.transform.position = new Vector3(attatchedObject.transform.position.x + (scaleDifference / 2),
@@ -67,24 +62,26 @@ public class ToolTip : MonoBehaviour
     }
 
     // parameter has to be string for on change to be dynamic
-    public void setObjectHeight(string stringHeight) {
-        int height = Int32.Parse(stringHeight);
-        int invert = 1;
+    public void setObjectWidth(string stringWidth) {
+        int width = (int) attatchedObject.transform.localScale.x;
+        int.TryParse(stringWidth, out width);
+        setObjectWidth(width);
+    }
+
+    public void setObjectHeight(int height) {
         if (height == 0) {
             return;
-        } else if (height < 0) {
-            invert = -1;
         }
 
         float oldScaleY = attatchedObject.transform.localScale.y;
     
         // changes height of object to user inputted height
         attatchedObject.transform.localScale = 
-            new Vector2(attatchedObject.transform.localScale.x, height * invert);
+            new Vector2(attatchedObject.transform.localScale.x, height);
     
         float newScaleY = attatchedObject.transform.localScale.y;
 
-        float scaleDifference = (newScaleY - oldScaleY) * invert;
+        float scaleDifference = newScaleY - oldScaleY;
     
         // keeps the walls position but extends in the y/up direction
         attatchedObject.transform.position = new Vector3(attatchedObject.transform.position.x,
@@ -93,5 +90,12 @@ public class ToolTip : MonoBehaviour
 
         // updates tooltip text to new height
         setHeightText(attatchedObject.transform.localScale.y.ToString());
+    }
+
+    // parameter has to be string for on change to be dynamic
+    public void setObjectHeight(string stringHeight) {
+        int height = (int) attatchedObject.transform.localScale.y;
+        int.TryParse(stringHeight, out height);
+        setObjectHeight(height);
     }
 }

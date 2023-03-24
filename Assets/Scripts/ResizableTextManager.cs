@@ -34,8 +34,6 @@ public class ResizableTextManager : MonoBehaviour
     [SerializeField]
     private List<RectTransform> parentLayouts;
 
-    bool active = false;
-
     // true if text or font changed since last update
     public bool textUpdated = false;
     public bool forceUpdate = false;

@@ -30,8 +30,6 @@ public class DynamicSizeSliderManager : MonoBehaviour
     private TMP_Text textComponent;
     private string currentText = "";
 
-    private bool active = false;
-
     void Start() {
         textComponent = textTransform.GetComponent<TMP_Text>();
         currentFontSize = textComponent.fontSize;
