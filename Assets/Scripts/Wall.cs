@@ -37,7 +37,7 @@ public class Wall : MonoBehaviour
         }
         // attatch this wall to the tooltip object
         levelCreatorManager.toolTipScript.setAttatchedObject(gameObject);
-        levelCreatorManager.transformTipScript.setAttatchedObject(gameObject);
+        levelCreatorManager.transformTipScript.attatchedObjectProperty = gameObject;
     }
 
     void OnMouseDrag() {
