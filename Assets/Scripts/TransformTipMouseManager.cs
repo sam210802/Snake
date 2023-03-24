@@ -1,6 +1,4 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class TransformTipMouseManager : MonoBehaviour
@@ -10,7 +8,7 @@ public class TransformTipMouseManager : MonoBehaviour
 
     Vector3 initialMousePos;
     float originalSize, newSize, mousePosChange;
-    Transform body, arrow;
+    Transform body, head;
 
     Quaternion originalRotation;
     Vector2 bodyOriginalScale, arrowOriginalScale;
@@ -18,15 +16,15 @@ public class TransformTipMouseManager : MonoBehaviour
 
     void Start() {
         body = transform.GetChild(0);
-        arrow = transform.GetChild(1);
+        head = transform.GetChild(1);
 
         originalRotation = transform.localRotation;
         
         bodyOriginalScale = body.localScale;
-        arrowOriginalScale = arrow.localScale;
+        arrowOriginalScale = head.localScale;
 
         bodyOriginalPosition = body.position;
-        arrowOriginalPosition = arrow.position;
+        arrowOriginalPosition = head.position;
     }
 
     void OnMouseDown() {
@@ -36,9 +34,9 @@ public class TransformTipMouseManager : MonoBehaviour
         initialMousePos = Input.mousePosition;
         // store original size of the attatched object
         if (gameObject.name == "TransformTipX") {
-            originalSize = transformTipScript.attatchedObject.transform.localScale.x;
+            originalSize = transformTipScript.attatchedObjectProperty.transform.localScale.x;
         } else {
-            originalSize = transformTipScript.attatchedObject.transform.localScale.y;
+            originalSize = transformTipScript.attatchedObjectProperty.transform.localScale.y;
         }
     }
 
@@ -65,25 +63,22 @@ public class TransformTipMouseManager : MonoBehaviour
         reset();
     }
 
+    // calculate position, scale, and rotation of transform tip
     void calculatePos() {
-        float oldScale, newScale, scaleDifference;
-
-        oldScale = body.localScale.x;
-        body.localScale = new Vector2(Mathf.Abs(mousePosChange), body.localScale.y);
-        newScale = body.localScale.x;
-
         Vector3 newAngle = transform.eulerAngles;
-        // negative or possitive
         if (mousePosChange < 0) {
             newAngle.z = 180;
         } else {
             newAngle.z = 0;
         }
+        // arrow rotation
         transform.eulerAngles = newAngle;
-
-        scaleDifference = newScale - oldScale;
+        // arrow body scale
+        body.localScale = new Vector2(Mathf.Abs(mousePosChange), body.localScale.y);
+        // arrow body position
         body.localPosition = new Vector3((body.localScale.x + 1)/2, body.localPosition.y, body.localPosition.z);
-        arrow.localPosition = new Vector3(body.localPosition.x*2, arrow.localPosition.y, arrow.localPosition.z);
+        // arrow head position
+        head.localPosition = new Vector3(body.localPosition.x*2, head.localPosition.y, head.localPosition.z);
     }
 
     void reset() {
@@ -91,11 +86,11 @@ public class TransformTipMouseManager : MonoBehaviour
         transform.localRotation = originalRotation;
 
         // reset scale
-        body.localScale = new Vector2(1, 1);
-        arrow.localScale = new Vector2(1, 1);
+        body.localScale = bodyOriginalScale;
+        head.localScale = arrowOriginalScale;
 
         // reset position
-        body.localPosition = new Vector3(1, 0, 0);
-        arrow.localPosition = new Vector3(1.79f, 0, 0);
+        body.localPosition = bodyOriginalPosition;
+        head.localPosition = arrowOriginalPosition;
     }
 }
