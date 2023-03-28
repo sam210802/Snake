@@ -1,16 +1,19 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class Food : MonoBehaviour
 {
+    public static Food instance;
 
-    private GameObject snake = null;
-
+    void Awake()
+    {
+        instance = this;
+    }
     // Start is called before the first frame update
     void Start()
     {
-        StartCoroutine(RandomisePos());
         gameObject.GetComponent<TimeBody>().Record();
     }
 
@@ -21,43 +24,78 @@ public class Food : MonoBehaviour
     }
 
     // sets the transforms position this scipts attatched to
-    // to a random position within the game area
-    public IEnumerator RandomisePos() {
-        bool uniquePos = false;
-        Vector3 newPos = new Vector3();
+    // to a random free position within the game area
+    public void RandomisePos() {
+        Debug.Log("Random Pos Start");
+        List<Vector2> freePositions = getFreePositions();
+        if (freePositions.Count == 0) {
+            Debug.Log("Win");
+            GameManager.instance.pauseGame();
+        } else {
+            Vector2 newPos = freePositions[UnityEngine.Random.Range(0, freePositions.Count)];
+            this.transform.position = newPos;
+        }
+        Debug.Log("Random Pos Finish");
+    }
 
-        while (uniquePos == false) {
-            uniquePos = true;
-            float x = Random.Range(((GameManager.instance.getGameWidth()/2)-1)*-1, (GameManager.instance.getGameWidth()/2)-1);
-            float y = Random.Range(((GameManager.instance.getGameHeight()/2)-1)*-1, (GameManager.instance.getGameHeight()/2)-1);
+    List<Vector2> getFreePositions() {
+        Board board = GameManager.instance.boardPropery;
+        int xPosMin = (int) board.wallLeftPropery.positionProperty.x;
+        int xPosMax = (int) board.wallRightPropery.positionProperty.x;
+        int yPosMin = (int) board.wallBottomPropery.positionProperty.y;
+        int yPosMax = (int) board.wallTopPropery.positionProperty.y;
 
-            newPos = new Vector3(x, y, 0.0f);
+        List<Transform> snakeSegments = Snake.instance.segmentsProperty;
+        List<Wall> walls = board.wallsProperty;
 
-            if (snake == null) {
-                try {
-                    snake = GameObject.FindGameObjectsWithTag("Snake")[0];
-                } catch (System.IndexOutOfRangeException e) {
-                    Debug.Log(e);
-                    break;
-                }
-            }
+        List<Vector2> occupiedPositions = new List<Vector2>();
+        foreach (Transform snakeSegment in snakeSegments) {
+            occupiedPositions.Add(new Vector2(snakeSegment.position.x, snakeSegment.position.y));
+        }
 
-            foreach (Transform child in snake.transform) {
-                if (newPos == child.position) {
-                    uniquePos = false;
+        int wallXPosMin, wallXPosMax, wallYPosMin, wallYPosMax;
+        float temp;
+        foreach (Wall wall in walls) {
+            temp = wall.positionProperty.x - Mathf.Abs(wall.scaleProperty.x/2);
+            wallXPosMin = (int) Mathf.Ceil(temp);
+
+            temp = wall.positionProperty.x + Mathf.Abs(wall.scaleProperty.x/2);
+            wallXPosMax = (int) Mathf.Floor(temp);
+
+            temp = wall.positionProperty.y - Mathf.Abs(wall.scaleProperty.y/2);
+            wallYPosMin = (int) Mathf.Ceil(temp);
+
+            temp = wall.positionProperty.y + Mathf.Abs(wall.scaleProperty.y/2);
+            wallYPosMax = (int) Mathf.Floor(temp);
+
+
+            for (int i = wallXPosMin; i <= wallXPosMax; i++) {
+                for (int j = wallYPosMin; j <= wallYPosMax; j++) {
+                    occupiedPositions.Add(new Vector2(i, j));
                 }
             }
         }
 
-        this.transform.position = newPos;
-        yield return null;
+        List<Vector2> positions = new List<Vector2>();
+        Vector2 position;
+        for (int i = xPosMin + 1; i < xPosMax; i++) {
+            for (int j = yPosMin + 1; j < yPosMax; j++) {
+                position = new Vector2(i, j);
+                if (!occupiedPositions.Contains(position)) {
+                    Debug.Log(1);
+                    positions.Add(position);
+                }
+            }
+        }
+
+        return positions;
     }
 
-    // called when game object this scripts attatched to collides with another object
-    private void OnTriggerEnter2D(Collider2D other) {
-        // if player collides with food change location
-        if (other.tag == "SnakeHead") {
-            StartCoroutine(RandomisePos());
-        }
-    }
+    // // called when game object this scripts attatched to collides with another object
+    // private void OnTriggerEnter2D(Collider2D other) {
+    //     // if player collides with food change location
+    //     if (other.tag == "SnakeHead") {
+    //         RandomisePos();
+    //     }
+    // }
 }

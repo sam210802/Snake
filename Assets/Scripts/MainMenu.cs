@@ -10,15 +10,14 @@ public class MainMenu : MonoBehaviour
     }
 
     public void PlayGame() {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+        LevelLoader.LoadGame();
     }
 
     public void PlayLevelCreator() {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 2);
+        LevelLoader.LoadLevelCreator();
     }
 
-    public void ExitGame() {
-        Debug.Log("Quit");
-        Application.Quit();
+    public void Exit() {
+        LevelLoader.Exit();
     }
 }

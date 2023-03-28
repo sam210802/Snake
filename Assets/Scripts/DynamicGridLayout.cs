@@ -10,18 +10,35 @@ public class DynamicGridLayout : LayoutGroup
     [SerializeField]
     private int rows;
 
-    private Vector2 cellSize;
+    Vector2 cellSize;
+    
+    [SerializeField]
+    Vector2 spacing;
 
     // default method called
     public override void CalculateLayoutInputHorizontal()
     {
         base.CalculateLayoutInputHorizontal();
 
-        float parentWidth = rectTransform.rect.width;
-        float parentHeight = rectTransform.rect.height;
+        float cellWidth = 0;
+        float cellHeight = 0;
 
-        float cellWidth = parentWidth / (float) columns;
-        float cellHeight = parentHeight / (float) rows;
+        foreach (RectTransform child in transform) {
+            cellWidth = Mathf.Max(cellWidth, child.sizeDelta.x);
+            cellHeight = Mathf.Max(cellHeight, child.sizeDelta.y);
+        }
+
+        rectTransform.sizeDelta = new Vector2((cellWidth + spacing.x * 2) * columns, (cellHeight + spacing.y * 2) * rows);
+
+        float sqrRt = Mathf.Sqrt(transform.childCount);
+        rows = Mathf.CeilToInt(sqrRt);
+        columns = Mathf.CeilToInt(sqrRt);
+
+        // float parentWidth = rectTransform.rect.width;
+        // float parentHeight = rectTransform.rect.height;
+
+        // float cellWidth = (parentWidth / (float) columns) - ((spacing.x / (float) columns) * (columns - 1));
+        // float cellHeight = (parentHeight / (float) rows) - ((spacing.y / (float) rows) * (rows - 1));
 
         cellSize.x = cellWidth;
         cellSize.y = cellHeight;
@@ -35,11 +52,11 @@ public class DynamicGridLayout : LayoutGroup
 
             var item = rectChildren[i];
 
-            var xPos = (cellSize.x * columnCount);
-            var yPos = (cellSize.y * rowCount);
+            var xPos = (cellSize.x * columnCount) + (spacing.x * columnCount);
+            var yPos = (cellSize.y * rowCount) + (spacing.y * rowCount);
 
             SetChildAlongAxis(item, 0, xPos, cellSize.x);
-            SetChildAlongAxis(item, 0, yPos, cellSize.y);
+            SetChildAlongAxis(item, 1, yPos, cellSize.y);
         }
     }
 

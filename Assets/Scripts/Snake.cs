@@ -3,16 +3,30 @@ using UnityEngine;
 
 public class Snake : MonoBehaviour
 {
+    public static Snake instance;
     // means direction can only be updated once per fixed update
     private bool directionKeyUpdated = false;
     // direction snake is traveling
     private Vector2 direction = Vector2.up;
     // list of transforms for each snake segment
     private List<Transform> segments;
+    public List<Transform> segmentsProperty {
+        get {
+            return segments;
+        }
+    }
 
     // snake body prefab
     [SerializeField]
     private Transform snakeBodyPrefab;
+
+    // position of tail on previous frame
+    Vector3 tailPreviousPos;
+
+    void Awake() {
+        instance = this;
+        segments = new List<Transform>();
+    }
 
     void Start() {
         // creates empty object to store all snake transforms
@@ -24,7 +38,6 @@ public class Snake : MonoBehaviour
         transform.parent = parent.transform;
 
         // adds snake head to segments list
-        segments = new List<Transform>();
         segments.Add(transform);
 
         // records position of snake so player can rewind to it
@@ -58,6 +71,7 @@ public class Snake : MonoBehaviour
     // fixed time interval
     // used for movement
     private void FixedUpdate() {
+        Debug.Log("Fixed Update");
         // Unity docs advise doing this when using Time.timeScale to pause game
         Time.fixedDeltaTime = GameManager.instance.getDefaultFixedDeltaTime() * Time.timeScale;
 
@@ -69,6 +83,9 @@ public class Snake : MonoBehaviour
 
         // if game is paused return
         if (GameManager.instance.isGamePaused()) return;
+
+        // update before new tail pos
+        tailPreviousPos = segments[segments.Count - 1].position;
 
         // sets position of each snake segment to the segment ahead of it
         for (int i = segments.Count - 1; i > 0; i--) {
@@ -86,6 +103,14 @@ public class Snake : MonoBehaviour
         directionKeyUpdated = false;
 
         GameManager.instance.incrementNumUpdates();
+
+        // can't use OnTriggerEnter2D() as it isn't being called after every fixed update
+        // so if food spawns directly infront of snake then snake passes through it
+        if (segments[0].position == Food.instance.transform.position) {
+            Grow();
+            Food.instance.RandomisePos();
+            GameUI.instance.updateScore();
+        }
     }
 
     // removes last Transform in list and destroys it
@@ -100,11 +125,6 @@ public class Snake : MonoBehaviour
         if (other.tag == "Wall" || other.tag == "Player") {
             Reset();
         }
-
-        // if player collides with food add segment
-        if (other.tag == "Food") {
-            Grow();
-        }
     }
 
     // resets snake to starting position, length and direction
@@ -113,7 +133,7 @@ public class Snake : MonoBehaviour
         GameManager.instance.pauseGame();
         GameManager.instance.resetNumUpdates();
 
-        GameObject.FindGameObjectWithTag("UI").GetComponent<GameUI>().setHighScore();
+        GameUI.instance.setHighScore();
 
         // reset snake
         transform.position = new Vector3(0.0f, 0.0f, 0.0f);
@@ -126,9 +146,11 @@ public class Snake : MonoBehaviour
 
     // adds a SnakeBody segment to the snake increasing it's length by one
     private void Grow() {
+        Debug.Log("Grow Start");
         Transform newSegment = Instantiate(snakeBodyPrefab, transform.parent);
-        newSegment.position = segments[segments.Count - 1].position;
+        newSegment.position = tailPreviousPos;
         segments.Add(newSegment);
+        Debug.Log("Grow Finish");
     }
 
     // get direction of snake

@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class TransformTip : MonoBehaviour
 {
-    public LevelCreatorManager levelCreatorManager;
+    public static TransformTip instance;
 
     private GameObject attatchedObject;
     public GameObject attatchedObjectProperty {
@@ -14,8 +14,8 @@ public class TransformTip : MonoBehaviour
         }
     }
 
-    void Start() {
-        levelCreatorManager = GameObject.FindObjectOfType<LevelCreatorManager>();
+    void Awake() {
+        instance = this;
     }
 
     void OnEnable() {

@@ -1,70 +1,89 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class Wall : MonoBehaviour
+public class Wall
 {
-    private LevelCreatorManager levelCreatorManager;
-
-    private Vector3 mousePosOffset;
-
-    void Start() {
-        levelCreatorManager = GameObject.FindObjectOfType<LevelCreatorManager>();
-    }
-
-    void OnMouseDown() {
-        if (!levelCreatorManager) return;
-
-        mousePosOffset = gameObject.transform.position - GetMouseWorldPos();
-    }
-
-    void OnMouseUp() {
-        if (!levelCreatorManager) return;
-
-        float offset = 0.5f;
-
-        // snap to grid
-        transform.position = new Vector2((float) Math.Round(transform.position.x, 0, MidpointRounding.AwayFromZero), (float) Math.Round(transform.position.y, 0, MidpointRounding.AwayFromZero));
-        // need to add 0.5 to pos if scale is even else will end up 0.5 out of alignment
-        if (transform.localScale.x % 2 == 0 && transform.position.x % 1 == 0) {
-            if (transform.position.x < 0) offset *= -1; // this needs to be done because of awayFromZero rounding
-            transform.position = new Vector2(transform.position.x - offset, transform.position.y);
+    string name;
+    public string nameProperty {
+        get {
+            return name;
+        } set {
+            name = value;
+            updateWall();
         }
-        if (transform.localScale.y % 2 == 0 && transform.position.y % 1 == 0) {
-            if (transform.position.y < 0) offset *= -1; // this needs to be done because of awayFromZero rounding
-            transform.position = new Vector2(transform.position.x, transform.position.y - offset);
+    }
+    Vector3 scale;
+    public Vector3 scaleProperty {
+        get {
+            return scale;
+        } set {
+            scale = value;
+            updateWall();
         }
-        // attatch this wall to the tooltip object
-        levelCreatorManager.toolTipScript.setAttatchedObject(gameObject);
-        levelCreatorManager.transformTipScript.attatchedObjectProperty = gameObject;
     }
 
-    void OnMouseDrag() {
-        if (!levelCreatorManager) return;
-
-        transform.position = GetMouseWorldPos() + mousePosOffset;
+    Vector3 position;
+    public Vector3 positionProperty {
+        get {
+            return position;
+        } set {
+            position = value;
+            updateWall();
+        }
     }
 
-    private Vector3 GetMouseWorldPos() {
-        return Camera.main.ScreenToWorldPoint(Input.mousePosition);
+    static string wallPrefabLocation = "Wall";
+    static Transform wallPrefab = (Resources.Load(wallPrefabLocation) as GameObject).transform;
+    public Transform transform;
+
+    public Wall(bool editMode = false) {
+        // create transform
+        transform = GameObject.Instantiate(wallPrefab);
+
+        if (editMode) transform.gameObject.AddComponent<WallMouseManager>();
+
+        scaleProperty = new Vector3(1, 1, 1);
+        positionProperty = new Vector3(0, 0, 0);
+        nameProperty = "Wall";
+    }
+
+    public Wall(WallData wallData, bool editMode = false) {
+        // create transform
+        transform = GameObject.Instantiate(wallPrefab);
+
+        if (editMode) transform.gameObject.AddComponent<WallMouseManager>();
+
+        scaleProperty = wallData.scale;
+        positionProperty = wallData.position;
+        nameProperty = wallData.name;
     }
 
     public WallData toJson() {
-        WallData data = new WallData();
-        data.name = gameObject.name;
-        data.tag = tag;
-        data.scale = transform.localScale;
-        data.position = transform.position;
+        return new WallData(transform.name, transform.localScale, transform.position);
+    }
 
-        return data;
+    void updateWall() {
+        transform.name = nameProperty;
+        transform.localScale = scaleProperty;
+        transform.localPosition = positionProperty;
     }
 }
 
 [Serializable]
 public class WallData {
     public string name;
-    public string tag;
     public Vector3 scale;
     public Vector3 position;
+
+    public WallData(string name) {
+        this.name = name;
+        this.scale = new Vector3(1, 1, 1);
+        this.position = new Vector3(0, 0, 0);
+    }
+
+    public WallData(string name, Vector3 scale, Vector3 position) {
+        this.name = name;
+        this.scale = scale;
+        this.position = position;
+    }
 }

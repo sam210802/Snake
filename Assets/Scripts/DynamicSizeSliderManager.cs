@@ -25,10 +25,10 @@ public class DynamicSizeSliderManager : MonoBehaviour
     [SerializeField]
     List<Slider> sliders;
 
-    private float currentFontSize;
+    float currentFontSize;
 
-    private TMP_Text textComponent;
-    private string currentText = "";
+    TMP_Text textComponent;
+    string currentText = "";
 
     void Start() {
         textComponent = textTransform.GetComponent<TMP_Text>();

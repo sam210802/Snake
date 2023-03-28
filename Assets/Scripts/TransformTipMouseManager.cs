@@ -3,14 +3,11 @@ using UnityEngine;
 
 public class TransformTipMouseManager : MonoBehaviour
 {   
-    [SerializeField]
-    TransformTip transformTipScript;
-
     Vector3 initialMousePos;
     float originalSize, newSize, mousePosChange;
     Transform body, head;
 
-    Quaternion originalRotation;
+    Vector3 originalRotation;
     Vector2 bodyOriginalScale, arrowOriginalScale;
     Vector3 bodyOriginalPosition, arrowOriginalPosition;
 
@@ -18,41 +15,41 @@ public class TransformTipMouseManager : MonoBehaviour
         body = transform.GetChild(0);
         head = transform.GetChild(1);
 
-        originalRotation = transform.localRotation;
+        originalRotation = transform.localEulerAngles;
         
         bodyOriginalScale = body.localScale;
         arrowOriginalScale = head.localScale;
 
-        bodyOriginalPosition = body.position;
-        arrowOriginalPosition = head.position;
+        bodyOriginalPosition = body.localPosition;
+        arrowOriginalPosition = head.localPosition;
     }
 
     void OnMouseDown() {
-        if (!transformTipScript.levelCreatorManager) return;
+        if (!LevelCreatorManager.instance) return;
 
         // store initial mouse pos location
         initialMousePos = Input.mousePosition;
         // store original size of the attatched object
         if (gameObject.name == "TransformTipX") {
-            originalSize = transformTipScript.attatchedObjectProperty.transform.localScale.x;
+            originalSize = TransformTip.instance.attatchedObjectProperty.transform.localScale.x;
         } else {
-            originalSize = transformTipScript.attatchedObjectProperty.transform.localScale.y;
+            originalSize = TransformTip.instance.attatchedObjectProperty.transform.localScale.y;
         }
     }
 
     void OnMouseDrag() {
-        if (!transformTipScript.levelCreatorManager) return;
+        if (!LevelCreatorManager.instance) return;
 
         // calculate new attatched object size
         // set attatched object size to calculated size
         if (gameObject.name == "TransformTipX") {
             mousePosChange = Camera.main.ScreenToWorldPoint(Input.mousePosition).x - Camera.main.ScreenToWorldPoint(initialMousePos).x;
             newSize = mousePosChange + originalSize;
-            transformTipScript.levelCreatorManager.toolTipScript.setObjectWidth((int) Math.Round(newSize, 0, MidpointRounding.AwayFromZero));
+            LevelCreatorManager.instance.toolTipScript.setObjectWidth((int) Math.Round(newSize, 0, MidpointRounding.AwayFromZero));
         } else {
             mousePosChange = Camera.main.ScreenToWorldPoint(Input.mousePosition).y - Camera.main.ScreenToWorldPoint(initialMousePos).y;
             newSize = mousePosChange + originalSize;
-            transformTipScript.levelCreatorManager.toolTipScript.setObjectHeight((int) Math.Round(newSize, 0, MidpointRounding.AwayFromZero));
+            LevelCreatorManager.instance.toolTipScript.setObjectHeight((int) Math.Round(newSize, 0, MidpointRounding.AwayFromZero));
 
         }
 
@@ -65,11 +62,11 @@ public class TransformTipMouseManager : MonoBehaviour
 
     // calculate position, scale, and rotation of transform tip
     void calculatePos() {
-        Vector3 newAngle = transform.eulerAngles;
+        Vector3 newAngle = transform.localEulerAngles;
         if (mousePosChange < 0) {
-            newAngle.z = 180;
+            newAngle.z = originalRotation.z + 180;
         } else {
-            newAngle.z = 0;
+            newAngle.z = originalRotation.z;
         }
         // arrow rotation
         transform.eulerAngles = newAngle;
@@ -83,7 +80,7 @@ public class TransformTipMouseManager : MonoBehaviour
 
     void reset() {
         // resset rotation
-        transform.localRotation = originalRotation;
+        transform.localEulerAngles = originalRotation;
 
         // reset scale
         body.localScale = bodyOriginalScale;

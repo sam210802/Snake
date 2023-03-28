@@ -10,7 +10,6 @@ public class TimeBody : MonoBehaviour
     private List<Vector3> positions;
     // only used for snake head
     private List<Vector2> directions;
-    private Snake script;
     private bool snakeHead = false;
 
     void Awake() {
@@ -20,7 +19,6 @@ public class TimeBody : MonoBehaviour
         if (gameObject.tag == "SnakeHead") {
             snakeHead = true;
             directions = new List<Vector2>();
-            script = gameObject.GetComponent<Snake>();
         }
     }
 
@@ -62,7 +60,7 @@ public class TimeBody : MonoBehaviour
         transform.position = positions[0];
         positions.RemoveAt(0);
         if (snakeHead) {
-            script.setDirection(directions[0]);
+            Snake.instance.setDirection(directions[0]);
             directions.RemoveAt(0);
         }
     }
@@ -72,7 +70,7 @@ public class TimeBody : MonoBehaviour
         positions.Insert(0, transform.position);
 
         if (snakeHead) {
-            directions.Insert(0, script.getDirection());
+            directions.Insert(0, Snake.instance.getDirection());
         }
     }
 

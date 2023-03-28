@@ -6,38 +6,48 @@ using UnityEngine;
 
 public class GameUI : MonoBehaviour
 {
+    public static GameUI instance;
     private TMP_Text scoreText;
     private TMP_Text highScoreText;
     private GameObject snake;
 
-    // Start is called before the first frame update
-    void Start()
-    {
+    void Awake() {
+        instance = this;
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        updateScore();
+    public void updateScore() {
+        setSnakeObject();
+        setScoreTextObject();
+
+        scoreText.text = snake.transform.childCount.ToString();
         updateHighScore();
     }
 
-    void updateScore() {
-        if (snake == null) snake = GameObject.FindGameObjectWithTag("Snake");
-        if (scoreText == null) scoreText = GameObject.FindGameObjectWithTag("Score").GetComponent<TMP_Text>();
-
-        scoreText.text = snake.transform.childCount.ToString();
-    }
-
-    void updateHighScore() {
-        if (highScoreText == null) highScoreText = GameObject.FindGameObjectWithTag("HighScore").GetComponent<TMP_Text>();
+    public void updateHighScore() {
+        setHighScoreTextObject();
 
         highScoreText.text = "High Score: " + PlayerPrefs.GetInt("HighScore", 0);
     }
 
+    // sets high score to score if score higher than old high score
     public void setHighScore() {
+        setScoreTextObject();
         int highScore = PlayerPrefs.GetInt("HighScore", 0);
-        // saves score if higher than current high score
-        PlayerPrefs.SetInt("HighScore", Mathf.Max(Int32.Parse(scoreText.text), highScore));
+        int score = 0;
+        int.TryParse(scoreText.text, out score);
+        highScore = Mathf.Max(score, highScore);
+        PlayerPrefs.SetInt("HighScore", highScore);
+    }
+
+    void setScoreTextObject() {
+        if (scoreText == null) scoreText = GameObject.FindGameObjectWithTag("Score").GetComponent<TMP_Text>();
+    }
+
+    void setHighScoreTextObject() {
+        if (highScoreText == null) highScoreText = GameObject.FindGameObjectWithTag("HighScore").GetComponent<TMP_Text>();
+    }
+
+    void setSnakeObject() {
+        if (snake == null) snake = GameObject.FindGameObjectWithTag("Snake");
     }
 }

@@ -396,37 +396,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 61697007}
   m_CullTransparentMesh: 1
---- !u!1 &200240699
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 200240700}
-  m_Layer: 0
-  m_Name: GameObject
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &200240700
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 200240699}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1285.544, y: 664.631, z: -6.84383}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 3
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &251582709
 GameObject:
   m_ObjectHideFlags: 0
@@ -678,7 +647,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 624124f8ae9d7df4ba66a2d9581516c9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  levelCreatorManager: {fileID: 1219963359}
   textPrefab: {fileID: 9109609152310704405, guid: dc6467c3c14d9cf4faef025b55561813, type: 3}
   buttonPrefab: {fileID: 5785581861082051233, guid: 4a0d85d052902e24789d4b9e6cb62a6c, type: 3}
 --- !u!114 &514105714
@@ -1440,7 +1408,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a5677d8d73318ee4d8d737bb446a60bc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  wallPrefab: {fileID: 2590688916286944147, guid: ecda01935c77b4e49a19ca1b2c2ca767, type: 3}
   toolTipScript: {fileID: 836529100}
   transformTipScript: {fileID: 1550479661}
   gridPrefab: {fileID: 349982181678849660, guid: f6b0e0599e6cd1849a3f5e096eb2cbbf, type: 3}
@@ -1460,7 +1427,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1241592592 stripped
 GameObject:
@@ -1479,7 +1446,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 75be1fa27f0cc9d44a46130f4df0a785, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  transformTipScript: {fileID: 1550479661}
 --- !u!61 &1241592595
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -2807,7 +2773,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 75be1fa27f0cc9d44a46130f4df0a785, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  transformTipScript: {fileID: 1550479661}
 --- !u!61 &1933060381
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -3375,9 +3340,13 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 4819646589070179153, guid: b52447e9e8d65f444b30e0d516b5d589, type: 3}
+      propertyPath: levelCreatorManager
+      value: 
+      objectReference: {fileID: 1219963359}
     - target: {fileID: 4819646589070179154, guid: b52447e9e8d65f444b30e0d516b5d589, type: 3}
       propertyPath: m_RootOrder
-      value: 5
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 4819646589070179154, guid: b52447e9e8d65f444b30e0d516b5d589, type: 3}
       propertyPath: m_LocalScale.x

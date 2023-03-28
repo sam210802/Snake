@@ -8,9 +8,6 @@ using UnityEngine.UI;
 public class LoadUI : MonoBehaviour
 {
     [SerializeField]
-    LevelCreatorManager levelCreatorManager;
-
-    [SerializeField]
     GameObject textPrefab;
 
     [SerializeField]
@@ -21,8 +18,8 @@ public class LoadUI : MonoBehaviour
         titleText.GetComponent<TMP_Text>().text = "Levels";
         titleText.GetComponent<ResizableTextManager>().addParentLayout(transform.parent.GetComponent<RectTransform>());
 
-        if (Directory.Exists(levelCreatorManager.getSaveLocation())) {
-            DirectoryInfo info = new DirectoryInfo(levelCreatorManager.getSaveLocation());
+        if (Directory.Exists(LevelSaveLoadManager.getSaveLocation())) {
+            DirectoryInfo info = new DirectoryInfo(LevelSaveLoadManager.getSaveLocation());
             FileInfo[] fileInfo = info.GetFiles();
             foreach (FileInfo file in fileInfo) {
                 if (file.Extension == ".json") {
@@ -37,10 +34,10 @@ public class LoadUI : MonoBehaviour
 
     void createButton(string name) {
         GameObject button = Instantiate(buttonPrefab, transform);
-        button.GetComponentInChildren<TMP_Text>().text = name;
+        button.GetComponentInChildren<TMP_Text>().text = name.Split(".")[0];
         button.GetComponentInChildren<ResizableTextManager>().defaultFontSizePropery = 16;
         button.GetComponent<Button>().onClick.AddListener(() => {
-            levelCreatorManager.load(name);
+            LevelCreatorManager.instance.newBoard(name);
             exit();});
     }
 

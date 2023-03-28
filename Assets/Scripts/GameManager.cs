@@ -5,18 +5,17 @@ using UnityEngine;
 public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
-    public Transform wallPrefab;
+    Board board;
+    public Board boardPropery {
+        get {
+            return board;
+        }
+    }
     public GameObject foodPrefab;
     public GameObject snakeHeadPrefab;
 
-    [SerializeField]
-    private int gameHeight = 10;
-    [SerializeField]
-    private int gameWidth = 10;
+    private float defaultFixedDeltaTime = 0.16f;
 
-    private float defaultFixedDeltaTime = 0.08f;
-
-    private GameObject gameArea;
     private GameObject foodObject;
     private Transform snakeObject;
 
@@ -24,11 +23,22 @@ public class GameManager : MonoBehaviour
     private int numUpdates = 0;
     private bool gamePaused = false;
 
+    public static string currentLevel;
+
     // Awake is called before first frame update and before start
     void Awake() {
         instance = this;
         // pauses game immediatly
         pauseGame();
+
+        // try load a level if current level isn't null
+        if (currentLevel != null) {
+            board = LevelSaveLoadManager.load(currentLevel);
+        }
+        // create default board if current level not an actual level
+        if (board == null) {
+            board = new Board("level_01", 9, 9);
+        }
     }
 
     // Start is called before the first frame update
@@ -57,7 +67,6 @@ public class GameManager : MonoBehaviour
         }
 
         if (numUpdates < 0 && rewinding) {
-            Debug.Log("Num updates < 0");
             resetNumUpdates();
             stopRewinding();
         }
@@ -75,51 +84,17 @@ public class GameManager : MonoBehaviour
 
     void startRewinding() {
         rewinding = true;
-        Debug.Log("Rewinding");
     }
 
     void stopRewinding() {
         rewinding = false;
         pauseGame();
-        Debug.Log("Rewinding Stopped");
-        Debug.Log(numUpdates);
     }
 
     // creates all game objects required to play game
     void init() {
-        createBoard();
-        createFood();
         createSnake();
-    }
-
-    void createBoard() {
-        gameArea = new GameObject();
-        gameArea.name = "GameArea";
-        for (int i = 0; i < 4; i++) {
-            Transform wall = Instantiate(wallPrefab, gameArea.transform);
-            switch (i) {
-                case 0:
-                    wall.localScale = new Vector3(1, gameHeight+2, 1);
-                    wall.position = new Vector3(-((gameWidth/2) + 1), 0, 0);
-                    wall.name = "Wall - Left";
-                    break;
-                case 1:
-                    wall.localScale = new Vector3(gameWidth+2, 1, 1);
-                    wall.position = new Vector3(0, (gameHeight/2) + 1, 0);
-                    wall.name = "Wall - Top";
-                    break;
-                case 2:
-                    wall.localScale = new Vector3(1, gameHeight+2, 1);
-                    wall.position = new Vector3((gameWidth/2) + 1, 0, 0);
-                    wall.name = "Wall - Right";
-                    break;
-                case 3:
-                    wall.localScale = new Vector3(gameWidth+2, 1, 1);
-                    wall.position = new Vector3(0, -((gameHeight/2) + 1), 0);
-                    wall.name = "Wall - Bottom";
-                    break;
-            }
-        }
+        createFood();
     }
 
     // creates food object
@@ -131,6 +106,8 @@ public class GameManager : MonoBehaviour
         foodObject = Instantiate(foodPrefab);
         // stops snake from colliding with apple on start
         foodObject.transform.position = new Vector3(1, 1, 0);
+        Debug.Log("Call Random Pos");
+        Food.instance.RandomisePos();
     }
 
     // creates snake object
@@ -149,13 +126,13 @@ public class GameManager : MonoBehaviour
     // get height of game board
     public int getGameHeight()
     {
-        return this.gameHeight;
+        return board.gameHeightProperty;
     }
 
     // get width of game board
     public int getGameWidth()
     {
-        return this.gameWidth;
+        return board.gameWidthProperty;
     }
 
     // get default fixed delta time of game
