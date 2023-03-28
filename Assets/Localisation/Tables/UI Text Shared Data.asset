@@ -51,6 +51,70 @@ MonoBehaviour:
     m_Key: LEVEL CREATOR
     m_Metadata:
       m_Items: []
+  - m_Id: 4342572299816960
+    m_Key: EXTRA-SMALL
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4342806690107392
+    m_Key: SMALL
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4342829620367360
+    m_Key: MEDIUM
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4342841599299584
+    m_Key: LARGE
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4342851569160192
+    m_Key: EXTRA-LARGE
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4345003532324864
+    m_Key: ENGLISH
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4345037913034752
+    m_Key: FRENCH
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4345039733362688
+    m_Key: SPANISH
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4360457801928704
+    m_Key: SCORE
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4360643647344640
+    m_Key: HIGH SCORE
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4374597413081088
+    m_Key: Level Name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4374738899537920
+    m_Key: Width
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4374785485672448
+    m_Key: Height
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4374904276750336
+    m_Key: Add Wall
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4375068718632960
+    m_Key: Save
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4375127417917440
+    m_Key: Load
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

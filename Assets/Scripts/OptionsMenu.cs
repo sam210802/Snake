@@ -1,38 +1,50 @@
+using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Localization.Settings;
+using Utilities.Localization;
 
 public class OptionsMenu : MonoBehaviour {
 
     [SerializeField]
     private TMP_Dropdown textSizeDropdown;
     [SerializeField]
+    LocalizeDropdown textSizeDropdownLocale;
+    [SerializeField]
     private TMP_Dropdown languageDropdown;
+    [SerializeField]
+    LocalizeDropdown languageDropdownLocale;
 
     void Start() {
-        var listOfOptions = textSizeDropdown.options.Select(OptionsMenu => OptionsMenu.text).ToList();
-        textSizeDropdown.value = listOfOptions.IndexOf(loadTextPrefs());
+        int index;
+        index = (int) loadTextPrefs();
+        textSizeDropdown.value = index;
+        textSizeDropdownLocale.selectedOptionIndex = index;
 
-        listOfOptions = languageDropdown.options.Select(OptionsMenu => OptionsMenu.text).ToList();
-        languageDropdown.value = loadLocalePrefs();
+        index = loadLocalePrefs();
+        languageDropdown.value = index;
     }
 
-    public void saveTextPrefsCoroutine(TMP_Dropdown dropdown) {
-        StartCoroutine(saveTextPrefs(dropdown.options[dropdown.value].text));
+    public void saveTextPrefs(TMP_Dropdown dropdown) {
+        StartCoroutine(saveTextPrefs((TextPrefs) dropdown.value));
     }
 
-    private static IEnumerator saveTextPrefs(string value) {
-        PlayerPrefs.SetString("TextSize", value);
+    static IEnumerator saveTextPrefs(TextPrefs textPref) {
+        PlayerPrefs.SetString("TextSize", textPref.ToString());
         yield return null;
     }
 
-    public static string loadTextPrefs() {
-        return PlayerPrefs.GetString("TextSize", "MEDIUM");
+    public static TextPrefs loadTextPrefs() {
+        TextPrefs textPref = TextPrefs.MEDIUM;
+        Enum.TryParse(PlayerPrefs.GetString("TextSize", TextPrefs.MEDIUM.ToString()), out textPref);
+        return textPref;
+
     }
 
-    public void setLocaleCoroutine(int localeID) {
+    public void startLocaleCoroutine(int localeID) {
         StartCoroutine(setLocale(localeID));
     }
 
@@ -40,15 +52,17 @@ public class OptionsMenu : MonoBehaviour {
     public static IEnumerator setLocale(int localeID) {
         yield return LocalizationSettings.InitializationOperation;
         LocalizationSettings.SelectedLocale = LocalizationSettings.AvailableLocales.Locales[localeID];
-        yield return saveLocalePrefs(localeID);
+        saveLocalePrefs(localeID);
+        yield return null;
     }
 
-    private static IEnumerator saveLocalePrefs(int localeID) {
+    private static void saveLocalePrefs(int localeID) {
         PlayerPrefs.SetInt("LocaleID", localeID);
-        yield return null;
     }
 
     public static int loadLocalePrefs() {
         return PlayerPrefs.GetInt("LocaleID", 0);
     }
 }
+
+public enum TextPrefs {XSMALL=0, SMALL=1, MEDIUM=2, LARGE=3, XLARGE=4};

@@ -56,6 +56,70 @@ MonoBehaviour:
       DE NIVEL'
     m_Metadata:
       m_Items: []
+  - m_Id: 4342572299816960
+    m_Localized: "\rEXTRA-PEQUE\xD1O"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4342806690107392
+    m_Localized: "PEQUE\xD1O"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4342829620367360
+    m_Localized: MEDIO
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4342841599299584
+    m_Localized: GRANDE
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4342851569160192
+    m_Localized: EXTRA-GRANDE
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4345037913034752
+    m_Localized: "FRANC\xC9S"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4345003532324864
+    m_Localized: "INGL\xC9S"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4345039733362688
+    m_Localized: "ESPA\xD1OL"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4360457801928704
+    m_Localized: PUNTAJE
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4360643647344640
+    m_Localized: "PUNTUACI\xD3N M\xC1S ALTA"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4374597413081088
+    m_Localized: Nombre del Nivel
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4374738899537920
+    m_Localized: Ancho
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4374785485672448
+    m_Localized: Altura
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4374904276750336
+    m_Localized: Agregar Muro
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4375068718632960
+    m_Localized: Ahorrar
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4375127417917440
+    m_Localized: Carga
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

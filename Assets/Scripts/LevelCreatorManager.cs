@@ -31,6 +31,7 @@ public class LevelCreatorManager : MonoBehaviour
 
     void Awake() {
         instance = this;
+        StartCoroutine(OptionsMenu.setLocale(OptionsMenu.loadLocalePrefs()));
     }
 
     // Start is called before the first frame update

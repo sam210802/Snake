@@ -7,7 +7,7 @@ MonoImporter:
   - wallPrefab: {fileID: 2590688916286944147, guid: ecda01935c77b4e49a19ca1b2c2ca767, type: 3}
   - foodPrefab: {fileID: 2781453294479679340, guid: 7b67ff46456d9444fbe579a613c50f6f, type: 3}
   - snakeHeadPrefab: {fileID: 5296063546324801211, guid: 012eab9e4de543042bc68dcbf36556a1, type: 3}
-  executionOrder: 0
+  executionOrder: -5
   icon: {instanceID: 0}
   userData: 
   assetBundleName: 

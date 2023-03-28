@@ -11,7 +11,7 @@ public class DynamicSizeDropdown : MonoBehaviour
     void Start()
     {
         var listOfOptions = dropdown.options.Select(OptionsMenu => OptionsMenu.text).ToList();
-        dropdown.value = listOfOptions.IndexOf(OptionsMenu.loadTextPrefs());
+        dropdown.value = (int) OptionsMenu.loadTextPrefs();
     }
 
     // Update is called once per frame

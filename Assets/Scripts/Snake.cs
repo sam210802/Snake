@@ -42,6 +42,8 @@ public class Snake : MonoBehaviour
 
         // records position of snake so player can rewind to it
         gameObject.GetComponent<TimeBody>().Record();
+
+        GameUI.instance.updateScore();
     }
 
     // Update is called once per frame
@@ -71,7 +73,6 @@ public class Snake : MonoBehaviour
     // fixed time interval
     // used for movement
     private void FixedUpdate() {
-        Debug.Log("Fixed Update");
         // Unity docs advise doing this when using Time.timeScale to pause game
         Time.fixedDeltaTime = GameManager.instance.getDefaultFixedDeltaTime() * Time.timeScale;
 
@@ -142,15 +143,15 @@ public class Snake : MonoBehaviour
             segments.RemoveAt(i);
         }
         direction = Vector2.up;
+
+        GameUI.instance.updateScore();
     }
 
     // adds a SnakeBody segment to the snake increasing it's length by one
     private void Grow() {
-        Debug.Log("Grow Start");
         Transform newSegment = Instantiate(snakeBodyPrefab, transform.parent);
         newSegment.position = tailPreviousPos;
         segments.Add(newSegment);
-        Debug.Log("Grow Finish");
     }
 
     // get direction of snake

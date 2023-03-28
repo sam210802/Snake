@@ -26,7 +26,6 @@ public class Food : MonoBehaviour
     // sets the transforms position this scipts attatched to
     // to a random free position within the game area
     public void RandomisePos() {
-        Debug.Log("Random Pos Start");
         List<Vector2> freePositions = getFreePositions();
         if (freePositions.Count == 0) {
             Debug.Log("Win");
@@ -35,7 +34,6 @@ public class Food : MonoBehaviour
             Vector2 newPos = freePositions[UnityEngine.Random.Range(0, freePositions.Count)];
             this.transform.position = newPos;
         }
-        Debug.Log("Random Pos Finish");
     }
 
     List<Vector2> getFreePositions() {
@@ -82,7 +80,6 @@ public class Food : MonoBehaviour
             for (int j = yPosMin + 1; j < yPosMax; j++) {
                 position = new Vector2(i, j);
                 if (!occupiedPositions.Contains(position)) {
-                    Debug.Log(1);
                     positions.Add(position);
                 }
             }
@@ -90,12 +87,4 @@ public class Food : MonoBehaviour
 
         return positions;
     }
-
-    // // called when game object this scripts attatched to collides with another object
-    // private void OnTriggerEnter2D(Collider2D other) {
-    //     // if player collides with food change location
-    //     if (other.tag == "SnakeHead") {
-    //         RandomisePos();
-    //     }
-    // }
 }

@@ -25,7 +25,7 @@ public class ResizableTextManager : MonoBehaviour
         }
     }
 
-    string currentFontSize;
+    TextPrefs currentFontSize;
     string currentText;
 
     [SerializeField]
@@ -75,7 +75,7 @@ public class ResizableTextManager : MonoBehaviour
         string fileContent = File.ReadAllText(textSizeFile);
         Dictionary<string, float> textSize = JsonConvert.DeserializeObject<Dictionary<string, float>>(fileContent);
 
-        text.fontSize = defaultFontSize * textSize[OptionsMenu.loadTextPrefs()];
+        text.fontSize = defaultFontSize * textSize[OptionsMenu.loadTextPrefs().ToString()];
 
         forceLayoutRebuild();
     }

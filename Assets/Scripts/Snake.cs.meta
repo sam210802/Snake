@@ -5,7 +5,7 @@ MonoImporter:
   serializedVersion: 2
   defaultReferences:
   - snakeBodyPrefab: {fileID: 291874810628789915, guid: 48efde4960284f7439574e0ef7c323b7, type: 3}
-  executionOrder: 0
+  executionOrder: -4
   icon: {instanceID: 0}
   userData: 
   assetBundleName: 

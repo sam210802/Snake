@@ -54,6 +54,70 @@ MonoBehaviour:
     m_Localized: "CR\xC9ATEUR\nDE NIVEAU"
     m_Metadata:
       m_Items: []
+  - m_Id: 4342572299816960
+    m_Localized: SUPER-PETIT
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4342806690107392
+    m_Localized: PETIT
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4342829620367360
+    m_Localized: MOYEN
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4342841599299584
+    m_Localized: GRAND
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4342851569160192
+    m_Localized: SUPER-GRAND
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4345003532324864
+    m_Localized: ANGLAIS
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4345037913034752
+    m_Localized: "FRAN\xC7AIS"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4345039733362688
+    m_Localized: ESPAGNOL
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4360457801928704
+    m_Localized: SCORE
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4360643647344640
+    m_Localized: "SCORE \xC9LEV\xC9"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4374597413081088
+    m_Localized: Nom de Niveau
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4374738899537920
+    m_Localized: Largeur
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4374785485672448
+    m_Localized: Hauter
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4374904276750336
+    m_Localized: Ajouter un Mur
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4375068718632960
+    m_Localized: Sauvegarder
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4375127417917440
+    m_Localized: Charger
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

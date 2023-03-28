@@ -28,6 +28,7 @@ public class GameManager : MonoBehaviour
     // Awake is called before first frame update and before start
     void Awake() {
         instance = this;
+        StartCoroutine(OptionsMenu.setLocale(OptionsMenu.loadLocalePrefs()));
         // pauses game immediatly
         pauseGame();
 
@@ -106,7 +107,6 @@ public class GameManager : MonoBehaviour
         foodObject = Instantiate(foodPrefab);
         // stops snake from colliding with apple on start
         foodObject.transform.position = new Vector3(1, 1, 0);
-        Debug.Log("Call Random Pos");
         Food.instance.RandomisePos();
     }
 
