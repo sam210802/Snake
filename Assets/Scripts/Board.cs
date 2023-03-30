@@ -37,6 +37,8 @@ public class Board
         }
     }
 
+    List<WallData> wallData = new List<WallData>();
+
     // odd only as game area has to be centered
     // default values on start
     // max value to avoid game freezing/crashing
@@ -71,6 +73,15 @@ public class Board
         }
     }
 
+    int scoreToWin = 10;
+    public int scoreToWinProperty {
+        get {
+            return scoreToWin;
+        } set {
+            scoreToWin = value;
+        }
+    }
+
     bool editMode;
 
     static int offset = 2;
@@ -80,21 +91,15 @@ public class Board
         levelNameProperty = levelData.name;
         gameWidth = levelData.width;
         gameHeight = levelData.height;
+        this.wallData = levelData.walls;
+        scoreToWin = levelData.scoreToWin;
         this.editMode = editMode;
-
-        createBoard();
-        
-        if (levelData.walls != null) addWalls(levelData.walls);
     }
 
-    public Board(string levelName, int width, int height, List<WallData> walls = null, bool editMode = false) : this(new LevelData(levelName, width, height, walls), editMode) {
-        levelNameProperty = levelName;
-        gameWidth = width;
-        gameHeight = height;
-    }
+    public Board(string levelName, int width, int height, int scoreToWin=10, List<WallData> walls = null, bool editMode = false) : this(new LevelData(levelName, width, height, scoreToWin, walls), editMode) {}
 
     // should only be called once
-    void createBoard() {
+    public void createBoard() {
         gameArea = new GameObject();
         gameArea.name = "GameArea";
 
@@ -128,6 +133,8 @@ public class Board
             }
             wall.transform.parent = gameArea.transform;
         }
+
+        addWalls(wallData);
 
         if (editMode) createGrid();
     }
@@ -236,7 +243,7 @@ public class Board
         foreach (Wall wall in wallsProperty) {
             walls.Add(wall.toJson());
         }
-        LevelData data = new LevelData(levelNameProperty, gameWidthProperty, gameHeightProperty, walls);
+        LevelData data = new LevelData(levelNameProperty, gameWidthProperty, gameHeightProperty, scoreToWin, walls);
         
         return data;
     }
@@ -247,12 +254,14 @@ public class LevelData {
     public string name;
     public int width;
     public int height;
+    public int scoreToWin;
     public List<WallData> walls = new List<WallData>();
 
-    public LevelData(string name, int width, int height, List<WallData> walls = null) {
+    public LevelData(string name, int width, int height, int scoreToWin=10, List<WallData> walls = null) {
         this.name = name;
         this.width = width;
         this.height = height;
+        this.scoreToWin = scoreToWin;
         this.walls = walls;
     }
 }

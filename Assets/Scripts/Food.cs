@@ -28,7 +28,7 @@ public class Food : MonoBehaviour
     public void RandomisePos() {
         List<Vector2> freePositions = getFreePositions();
         if (freePositions.Count == 0) {
-            Debug.Log("Win");
+            GameManager.instance.boardFilled = true;
             GameManager.instance.pauseGame();
         } else {
             Vector2 newPos = freePositions[UnityEngine.Random.Range(0, freePositions.Count)];

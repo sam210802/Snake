@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
@@ -14,7 +15,7 @@ public class GameManager : MonoBehaviour
     public GameObject foodPrefab;
     public GameObject snakeHeadPrefab;
 
-    private float defaultFixedDeltaTime = 0.16f;
+    private float fixedDeltaTime;
 
     private GameObject foodObject;
     private Transform snakeObject;
@@ -23,23 +24,36 @@ public class GameManager : MonoBehaviour
     private int numUpdates = 0;
     private bool gamePaused = false;
 
-    public static string currentLevel;
+    // true when all board tiles are occupied
+    // aka when snake length equals available tiles
+    public bool boardFilled = false;
+    bool won = false;
+
+    static string currentLevel;
+    static bool defaultLevel;
 
     // Awake is called before first frame update and before start
     void Awake() {
         instance = this;
+        fixedDeltaTime = Time.fixedDeltaTime;
         StartCoroutine(OptionsMenu.setLocale(OptionsMenu.loadLocalePrefs()));
+
         // pauses game immediatly
         pauseGame();
 
         // try load a level if current level isn't null
         if (currentLevel != null) {
-            board = LevelSaveLoadManager.load(currentLevel);
+            if (defaultLevel) {
+                board = LevelSaveLoadManager.loadDefault(int.Parse(currentLevel));
+            } else {
+                board = LevelSaveLoadManager.load(currentLevel);
+            }
         }
         // create default board if current level not an actual level
         if (board == null) {
-            board = new Board("level_01", 9, 9);
+            board = new Board("default_level", 9, 9);
         }
+        board.createBoard();
     }
 
     // Start is called before the first frame update
@@ -70,6 +84,21 @@ public class GameManager : MonoBehaviour
         if (numUpdates < 0 && rewinding) {
             resetNumUpdates();
             stopRewinding();
+        }
+
+        if (GameUI.instance.scoreProperty >= board.scoreToWinProperty && won == false) {
+            Debug.Log("Congratulations you won");
+            int currentMaxLevel = PlayerPrefs.GetInt("MaxLevelUnlocked", 1);
+            int newMaxLevel = int.Parse(Regex.Match(board.levelNameProperty, "\\d+").ToString()) + 1;
+            Debug.Log("New Max Level: " + newMaxLevel);
+            PlayerPrefs.SetInt("MaxLevelUnlocked", Mathf.Max(currentMaxLevel, newMaxLevel));
+            won = true;
+        }
+
+        if (boardFilled) {
+            Debug.Log("Congratulations you fully ocmpleted this level");
+            boardFilled = false;
+            pauseGame();
         }
     }
 
@@ -136,9 +165,9 @@ public class GameManager : MonoBehaviour
     }
 
     // get default fixed delta time of game
-    public float getDefaultFixedDeltaTime()
+    public float getFixedDeltaTime()
     {
-        return this.defaultFixedDeltaTime;
+        return this.fixedDeltaTime;
     }
 
     public bool isRewinding()
@@ -175,5 +204,15 @@ public class GameManager : MonoBehaviour
     public bool isGamePaused()
     {
         return this.gamePaused;
+    }
+
+    public static void setCurrentLevel(string levelName, bool isDefaultLevel) {
+        currentLevel = levelName + ".json";
+        defaultLevel = isDefaultLevel;
+    }
+
+    public static void setCurrentLevel(int levelNumber) {
+        currentLevel = levelNumber.ToString("00");
+        defaultLevel = true;
     }
 }

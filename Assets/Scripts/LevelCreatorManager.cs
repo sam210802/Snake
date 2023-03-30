@@ -29,6 +29,9 @@ public class LevelCreatorManager : MonoBehaviour
     [SerializeField]
     TMP_InputField levelNameInput;
 
+    [SerializeField]
+    TMP_InputField scoreToWinInput;
+
     void Awake() {
         instance = this;
         StartCoroutine(OptionsMenu.setLocale(OptionsMenu.loadLocalePrefs()));
@@ -43,7 +46,6 @@ public class LevelCreatorManager : MonoBehaviour
     public void newBoard(string levelName = null) {
         Debug.Log("New Board");
         if (board != null) {
-            Debug.Log(1);
             board.deleteBoard();
         }
         if (levelName != null) {
@@ -51,13 +53,15 @@ public class LevelCreatorManager : MonoBehaviour
             board = LevelSaveLoadManager.load(levelName, true);
         }
         if (board == null) {
-            Debug.Log(3);
-            board = new Board("level_01", defaultHeight, defaultWidth, null, true);
+            board = new Board("level_01", defaultHeight, defaultWidth, 10, null, true);
         }
+
+        board.createBoard();
 
         widthInput.text = board.gameWidthProperty.ToString();
         heightInput.text = board.gameHeightProperty.ToString();
         levelNameInput.text = board.levelNameProperty;
+        scoreToWinInput.text = board.scoreToWinProperty.ToString();
     }
 
     public void addWall() {
@@ -101,6 +105,17 @@ public class LevelCreatorManager : MonoBehaviour
         board.gameHeightProperty = newHeight;
         // since height is capped we need to reset input text
         heightInput.text = board.gameHeightProperty.ToString();
+    }
+
+    public void setGameScore(int score) {
+        board.scoreToWinProperty = score;
+    }
+
+    // parameter has to be string so editor allows for dynamic onValueChange
+    public void setGameScore(string score) {
+        int newScore = board.scoreToWinProperty;
+        int.TryParse(score, out newScore);
+        board.scoreToWinProperty = newScore;
     }
 
     public void setLevelName(string name) {

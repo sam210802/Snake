@@ -28,8 +28,6 @@ public class DynamicGridLayout : LayoutGroup
             cellHeight = Mathf.Max(cellHeight, child.sizeDelta.y);
         }
 
-        rectTransform.sizeDelta = new Vector2((cellWidth + spacing.x * 2) * columns, (cellHeight + spacing.y * 2) * rows);
-
         float sqrRt = Mathf.Sqrt(transform.childCount);
         rows = Mathf.CeilToInt(sqrRt);
         columns = Mathf.CeilToInt(sqrRt);
@@ -52,12 +50,14 @@ public class DynamicGridLayout : LayoutGroup
 
             var item = rectChildren[i];
 
-            var xPos = (cellSize.x * columnCount) + (spacing.x * columnCount);
-            var yPos = (cellSize.y * rowCount) + (spacing.y * rowCount);
+            var xPos = (cellSize.x * columnCount) + (spacing.x * (columnCount));
+            var yPos = (cellSize.y * rowCount) + (spacing.y * (rowCount));
 
             SetChildAlongAxis(item, 0, xPos, cellSize.x);
             SetChildAlongAxis(item, 1, yPos, cellSize.y);
         }
+
+        rectTransform.sizeDelta = new Vector2((cellWidth * columns) + (spacing.x * (columns - 1)), (cellHeight * rows) + (spacing.y * (rows - 1)));
     }
 
     public override void CalculateLayoutInputVertical()

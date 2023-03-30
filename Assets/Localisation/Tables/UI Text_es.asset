@@ -89,23 +89,23 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 4360457801928704
-    m_Localized: PUNTAJE
+    m_Localized: 'PUNTAJE: '
     m_Metadata:
       m_Items: []
   - m_Id: 4360643647344640
-    m_Localized: "PUNTUACI\xD3N M\xC1S ALTA"
+    m_Localized: "PUNTUACI\xD3N M\xC1S ALTA: "
     m_Metadata:
       m_Items: []
   - m_Id: 4374597413081088
-    m_Localized: Nombre del Nivel
+    m_Localized: 'Nombre del Nivel: '
     m_Metadata:
       m_Items: []
   - m_Id: 4374738899537920
-    m_Localized: Ancho
+    m_Localized: 'Ancho: '
     m_Metadata:
       m_Items: []
   - m_Id: 4374785485672448
-    m_Localized: Altura
+    m_Localized: 'Altura: '
     m_Metadata:
       m_Items: []
   - m_Id: 4374904276750336
@@ -118,6 +118,10 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 4375127417917440
     m_Localized: Carga
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4717352718929920
+    m_Localized: "Puntuaci\xF3n Para Ganar: "
     m_Metadata:
       m_Items: []
   references:

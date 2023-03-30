@@ -74,7 +74,7 @@ public class Snake : MonoBehaviour
     // used for movement
     private void FixedUpdate() {
         // Unity docs advise doing this when using Time.timeScale to pause game
-        Time.fixedDeltaTime = GameManager.instance.getDefaultFixedDeltaTime() * Time.timeScale;
+        Time.fixedDeltaTime = GameManager.instance.getFixedDeltaTime() * Time.timeScale;
 
         // if game is rewinding decrement update and return
         if (GameManager.instance.isRewinding()) {
