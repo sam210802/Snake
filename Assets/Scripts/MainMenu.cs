@@ -7,6 +7,7 @@ public class MainMenu : MonoBehaviour
 {
     void Awake() {
         StartCoroutine(OptionsMenu.setLocale(OptionsMenu.loadLocalePrefs()));
+        AudioManager.PlayMusic(AudioManager.backgroundMusicWallpaper);
     }
 
     public void PlayGame() {

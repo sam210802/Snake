@@ -238,6 +238,27 @@ public class Board
         removeAllWalls();
     }
 
+    // sets completions state of level
+    // also increments levels_completed/levels_fully_completed by one if it's the first time completing/fully completing level
+    public void setCompletionState(LevelCompletion completionState) {
+        if (completionState == LevelCompletion.Completed && getCompletionState() == LevelCompletion.Not_Completed) {
+            PlayerPrefs.SetInt("Levels_Completed", PlayerPrefs.GetInt("Levels_Completed", 0) + 1);
+        } else if (completionState == LevelCompletion.Fully_Completed && getCompletionState() != LevelCompletion.Fully_Completed) {
+            PlayerPrefs.SetInt("Levels_Fully_Completed", PlayerPrefs.GetInt("Levels_Fully_Completed", 0) + 1);
+        }
+
+        PlayerPrefs.SetString($"{levelNameProperty}_Completion_State", completionState.ToString());
+    }
+
+    // returns completion state of level
+    // defaults to Not_Completed
+    public LevelCompletion getCompletionState() {
+        LevelCompletion completionState = LevelCompletion.Not_Completed;
+        Enum.TryParse<LevelCompletion>(PlayerPrefs.GetString($"{levelNameProperty}_Completion_State",
+            LevelCompletion.Not_Completed.ToString()), out completionState);
+        return completionState;
+    }
+
     public LevelData toData() {
         List<WallData> walls = new List<WallData>();
         foreach (Wall wall in wallsProperty) {
@@ -265,3 +286,5 @@ public class LevelData {
         this.walls = walls;
     }
 }
+
+public enum LevelCompletion {Not_Completed, Completed, Fully_Completed};

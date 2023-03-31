@@ -27,7 +27,7 @@ public class GameManager : MonoBehaviour
     // true when all board tiles are occupied
     // aka when snake length equals available tiles
     public bool boardFilled = false;
-    bool won = false;
+    LevelCompletion levelState = LevelCompletion.Not_Completed;
 
     static string currentLevel;
     static bool defaultLevel;
@@ -41,19 +41,26 @@ public class GameManager : MonoBehaviour
         // pauses game immediatly
         pauseGame();
 
-        // try load a level if current level isn't null
+        // try load last level played
+        // else load highest unlocked level
         if (currentLevel != null) {
             if (defaultLevel) {
                 board = LevelSaveLoadManager.loadDefault(int.Parse(currentLevel));
             } else {
                 board = LevelSaveLoadManager.load(currentLevel);
             }
-        }
-        // create default board if current level not an actual level
-        if (board == null) {
-            board = new Board("default_level", 9, 9);
+        } else {
+            int newBoardLevelNumber = 0;
+            foreach (Board newBoard in LevelSaveLoadManager.loadAllDefault()) {
+                board = newBoard;
+                int.TryParse(Regex.Match(board.levelNameProperty, "\\d+").ToString(), out newBoardLevelNumber);
+                if (PlayerPrefs.GetInt("MaxLevelUnlocked", 1) <= newBoardLevelNumber) break;
+            }
         }
         board.createBoard();
+
+        AchievementManager.InitializeAchievements();
+        AudioManager.PlayMusic(AudioManager.backgroundMusicSpaceJazz);
     }
 
     // Start is called before the first frame update
@@ -81,25 +88,41 @@ public class GameManager : MonoBehaviour
             stopRewinding();
         }
 
+        // back to menu
+        if (Input.GetKeyUp(KeyCode.Escape)) {
+            LevelLoader.LoadMainMenu();
+        }
+
         if (numUpdates < 0 && rewinding) {
             resetNumUpdates();
             stopRewinding();
         }
 
-        if (GameUI.instance.scoreProperty >= board.scoreToWinProperty && won == false) {
-            Debug.Log("Congratulations you won");
-            int currentMaxLevel = PlayerPrefs.GetInt("MaxLevelUnlocked", 1);
-            int newMaxLevel = int.Parse(Regex.Match(board.levelNameProperty, "\\d+").ToString()) + 1;
-            Debug.Log("New Max Level: " + newMaxLevel);
-            PlayerPrefs.SetInt("MaxLevelUnlocked", Mathf.Max(currentMaxLevel, newMaxLevel));
-            won = true;
+        if (GameUI.instance.scoreProperty >= board.scoreToWinProperty && levelState == LevelCompletion.Not_Completed) {
+            LevelCompleted();
         }
 
-        if (boardFilled) {
-            Debug.Log("Congratulations you fully ocmpleted this level");
-            boardFilled = false;
-            pauseGame();
+        if (boardFilled && levelState != LevelCompletion.Fully_Completed) {
+            LevelFullyCompleted();
         }
+
+        AchievementManager.CheckAchievementCompletion();
+    }
+
+    void LevelCompleted() {
+        AudioManager.PlaySound(AudioManager.smallWinSound);
+        int currentMaxLevel = PlayerPrefs.GetInt("MaxLevelUnlocked", 1);
+        int newMaxLevel = int.Parse(Regex.Match(board.levelNameProperty, "\\d+").ToString()) + 1;
+        PlayerPrefs.SetInt("MaxLevelUnlocked", Mathf.Max(currentMaxLevel, newMaxLevel));
+        board.setCompletionState(LevelCompletion.Completed);
+        levelState = LevelCompletion.Completed;
+    }
+
+    void LevelFullyCompleted() {
+        AudioManager.PlaySound(AudioManager.bigWinSound);
+        board.setCompletionState(LevelCompletion.Fully_Completed);
+        levelState = LevelCompletion.Fully_Completed;
+        pauseGame();
     }
 
     public void pauseGame() {

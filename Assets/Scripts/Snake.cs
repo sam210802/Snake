@@ -111,6 +111,10 @@ public class Snake : MonoBehaviour
             Grow();
             Food.instance.RandomisePos();
             GameUI.instance.updateScore();
+            // increments apples eaten by one
+            PlayerPrefs.SetInt("Apples_Eaten", PlayerPrefs.GetInt("Apples_Eaten", 0) + 1);
+            // plays eat sound effect
+            AudioManager.PlaySound(AudioManager.nomSound);
         }
     }
 
@@ -124,6 +128,9 @@ public class Snake : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D other) {
         // if player collides with wall end game
         if (other.tag == "Wall" || other.tag == "Player") {
+            // increments total deaths by one
+            PlayerPrefs.SetInt("Total_Deaths", PlayerPrefs.GetInt("Total_Deaths", 0) + 1);
+            AudioManager.PlaySound(AudioManager.deathSound);
             Reset();
         }
     }

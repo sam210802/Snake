@@ -5,6 +5,7 @@ using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Localization.Settings;
+using UnityEngine.UI;
 using Utilities.Localization;
 
 public class OptionsMenu : MonoBehaviour {
@@ -17,6 +18,12 @@ public class OptionsMenu : MonoBehaviour {
     private TMP_Dropdown languageDropdown;
     [SerializeField]
     LocalizeDropdown languageDropdownLocale;
+    [SerializeField]
+    Slider mainVolumeSlider;
+    [SerializeField]
+    Slider musicVolumeSlider;
+    [SerializeField]
+    Slider SFXVolumeSlider;
 
     void Start() {
         int index;
@@ -26,6 +33,10 @@ public class OptionsMenu : MonoBehaviour {
 
         index = loadLocalePrefs();
         languageDropdown.value = index;
+
+        mainVolumeSlider.value = PlayerPrefs.GetFloat("Main_Volume", 1.0f);
+        SFXVolumeSlider.value = PlayerPrefs.GetFloat("SFX_Volume", 1.0f);
+        musicVolumeSlider.value = PlayerPrefs.GetFloat("Music_Volume", 1.0f);
     }
 
     public void saveTextPrefs(TMP_Dropdown dropdown) {
@@ -62,6 +73,22 @@ public class OptionsMenu : MonoBehaviour {
 
     public static int loadLocalePrefs() {
         return PlayerPrefs.GetInt("LocaleID", 0);
+    }
+
+    public static void SetMainVolume(float volume) {
+        PlayerPrefs.SetFloat("Main_Volume", volume);
+        AudioManager.ChangeMusicVolume();
+        AudioManager.ChangeSFXVolume();
+    }
+
+    public static void SetMusicVolume(float volume) {
+        PlayerPrefs.SetFloat("Music_Volume", volume);
+        AudioManager.ChangeMusicVolume();
+    }
+
+    public static void SetSFXVolume(float volume) {
+        PlayerPrefs.SetFloat("SFX_Volume", volume);
+        AudioManager.ChangeSFXVolume();
     }
 }
 

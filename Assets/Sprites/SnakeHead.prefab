@@ -148,6 +148,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   snakeBodyPrefab: {fileID: 291874810628789915, guid: 48efde4960284f7439574e0ef7c323b7, type: 3}
+  audioSource: {fileID: 0}
 --- !u!114 &-1101722164990430297
 MonoBehaviour:
   m_ObjectHideFlags: 0
