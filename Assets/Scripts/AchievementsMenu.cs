@@ -25,6 +25,14 @@ public class AchievementsMenu : MonoBehaviour
                 newAchievement(achievement.title, achievement.description, uncompletedAchievementsGridLayout);
             }
         }
+
+        if (completedAchievementsGridLayout.childCount == 0) {
+            newAchievement("None", "", completedAchievementsGridLayout);
+        }
+
+        if (uncompletedAchievementsGridLayout.childCount == 0) {
+            newAchievement("None", "", uncompletedAchievementsGridLayout);
+        }
     }
 
     void resetCompletedGrid() {
