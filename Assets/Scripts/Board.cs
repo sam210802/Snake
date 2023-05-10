@@ -134,7 +134,7 @@ public class Board
             wall.transform.parent = gameArea.transform;
         }
 
-        addWalls(wallData);
+        if (wallData != null) addWalls(wallData);
 
         if (editMode) createGrid();
     }

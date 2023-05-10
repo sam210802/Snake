@@ -29,7 +29,7 @@ public class Food : MonoBehaviour
         List<Vector2> freePositions = getFreePositions();
         if (freePositions.Count == 0) {
             GameManager.instance.boardFilled = true;
-            GameManager.instance.pauseGame();
+            GameManager.instance.pauseGameNoGUI();
         } else {
             Vector2 newPos = freePositions[UnityEngine.Random.Range(0, freePositions.Count)];
             this.transform.position = newPos;

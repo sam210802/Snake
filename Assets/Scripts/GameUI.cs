@@ -47,4 +47,8 @@ public class GameUI : MonoBehaviour
         highScore = Mathf.Max(score, highScore);
         PlayerPrefs.SetInt(GameManager.instance.boardPropery.levelNameProperty + "_HighScore", highScore);
     }
+
+    public void MainMenu() {
+        LevelLoader.LoadMainMenu();
+    }
 }

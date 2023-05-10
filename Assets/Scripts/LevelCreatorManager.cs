@@ -73,7 +73,7 @@ public class LevelCreatorManager : MonoBehaviour
     }
 
     public void backToMainMenu() {
-        LevelSaveLoadManager.save(board);
+        save();
         SceneManager.LoadScene(0);
     }
 

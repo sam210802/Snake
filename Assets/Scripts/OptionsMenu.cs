@@ -91,5 +91,3 @@ public class OptionsMenu : MonoBehaviour {
         AudioManager.ChangeSFXVolume();
     }
 }
-
-public enum TextPrefs {XSMALL=0, SMALL=1, MEDIUM=2, LARGE=3, XLARGE=4};

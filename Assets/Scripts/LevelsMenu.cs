@@ -15,18 +15,6 @@ public class LevelsMenu : MonoBehaviour
     [SerializeField]
     Transform customLevelsGridLayout;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
     void OnEnable() {
         resetDefaultLevelsGridLayout();
         foreach (Board board in LevelSaveLoadManager.loadAllDefault()) {

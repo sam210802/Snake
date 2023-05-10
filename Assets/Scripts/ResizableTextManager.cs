@@ -1,17 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.IO;
 using Newtonsoft.Json;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-// this class searches for any text with the "Text - Resizable" tag
-// and text with this tag is scaled according to the user input text size
+public enum TextPrefs {XSMALL=0, SMALL=1, MEDIUM=2, LARGE=3, XLARGE=4};
+
 public class ResizableTextManager : MonoBehaviour
 {
     // location where default text sizes are stored
-    static string textSizeFile = "Assets/Data/textSize.json";
+    static string textSizeFile = "textSize";
     
     [SerializeField]
     private int defaultFontSize = 24;
@@ -45,13 +44,13 @@ public class ResizableTextManager : MonoBehaviour
 
     void OnEnable() {
         updateTextSize();
-
     }
 
     void Update() {
         textUpdated = false;
 
         // forces text to update
+        // testing purposes
         if (forceUpdate) {
             updateTextSize();
             forceUpdate = false;
@@ -69,11 +68,12 @@ public class ResizableTextManager : MonoBehaviour
     }
 
     public void updateTextSize() {
-        // break if file doesn't exist
-        if (!File.Exists(textSizeFile)) return;
+        TextAsset file = Resources.Load<TextAsset>(textSizeFile);
 
-        string fileContent = File.ReadAllText(textSizeFile);
-        Dictionary<string, float> textSize = JsonConvert.DeserializeObject<Dictionary<string, float>>(fileContent);
+        // break if file doesn't exist
+        if (file == null) return;
+
+        Dictionary<string, float> textSize = JsonConvert.DeserializeObject<Dictionary<string, float>>(file.ToString());
 
         text.fontSize = defaultFontSize * textSize[OptionsMenu.loadTextPrefs().ToString()];
 

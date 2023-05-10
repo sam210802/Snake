@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
@@ -32,6 +33,17 @@ public class GameManager : MonoBehaviour
     static string currentLevel;
     static bool defaultLevel;
 
+    [SerializeField]
+    GameObject completedScreen;
+
+    [SerializeField]
+    GameObject winScreen;
+
+    [SerializeField]
+    GameObject pauseScreen;
+
+    InputHandler inputHandler = new InputHandler();
+
     // Awake is called before first frame update and before start
     void Awake() {
         instance = this;
@@ -39,7 +51,7 @@ public class GameManager : MonoBehaviour
         StartCoroutine(OptionsMenu.setLocale(OptionsMenu.loadLocalePrefs()));
 
         // pauses game immediatly
-        pauseGame();
+        pauseGameNoGUI();
 
         // try load last level played
         // else load highest unlocked level
@@ -59,7 +71,6 @@ public class GameManager : MonoBehaviour
         }
         board.createBoard();
 
-        AchievementManager.InitializeAchievements();
         AudioManager.PlayMusic(AudioManager.backgroundMusicSpaceJazz);
     }
 
@@ -67,31 +78,22 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         init();
+
+        // game controls
+        inputHandler.AssignCommand(new PauseCommand(this), InputHandler.getKey(Commands.PauseCommand));
+        inputHandler.AssignCommand(new RewindCommand(this), InputHandler.getKey(Commands.RewindCommand));
     }
 
     // Update is called once per frame
     void Update()
     {
-        // pauses and unpases the game
-        if (Input.GetKeyUp(KeyCode.Space)) {
-            if (gamePaused) {
-                resumeGame();
-            } else {
-                pauseGame();
-            }
+        // return early if win/completed/pause screen displayed
+        if (winScreen.activeSelf || completedScreen.activeSelf || pauseScreen.activeSelf) {
+            return;
         }
 
-        // rewinding game
-        if (Input.GetKeyDown(KeyCode.Return) && numUpdates > 0) {
-            startRewinding();
-        } else if (Input.GetKeyUp(KeyCode.Return)) {
-            stopRewinding();
-        }
-
-        // back to menu
-        if (Input.GetKeyUp(KeyCode.Escape)) {
-            LevelLoader.LoadMainMenu();
-        }
+        // check for user input each frame
+        inputHandler.InputUpdate();
 
         if (numUpdates < 0 && rewinding) {
             resetNumUpdates();
@@ -105,43 +107,62 @@ public class GameManager : MonoBehaviour
         if (boardFilled && levelState != LevelCompletion.Fully_Completed) {
             LevelFullyCompleted();
         }
-
-        AchievementManager.CheckAchievementCompletion();
     }
 
     void LevelCompleted() {
         AudioManager.PlaySound(AudioManager.smallWinSound);
         int currentMaxLevel = PlayerPrefs.GetInt("MaxLevelUnlocked", 1);
-        int newMaxLevel = int.Parse(Regex.Match(board.levelNameProperty, "\\d+").ToString()) + 1;
-        PlayerPrefs.SetInt("MaxLevelUnlocked", Mathf.Max(currentMaxLevel, newMaxLevel));
+        try {
+            int newMaxLevel = int.Parse(Regex.Match(board.levelNameProperty, "\\d+").ToString()) + 1;
+            PlayerPrefs.SetInt("MaxLevelUnlocked", Mathf.Max(currentMaxLevel, newMaxLevel));
+        } catch (Exception e) {
+            Debug.Log("Exception: " + e);
+        }
         board.setCompletionState(LevelCompletion.Completed);
         levelState = LevelCompletion.Completed;
+
+        // pause game
+        pauseGameNoGUI();
+
+        // display win screen
+        winScreen.SetActive(true);
     }
 
     void LevelFullyCompleted() {
         AudioManager.PlaySound(AudioManager.bigWinSound);
         board.setCompletionState(LevelCompletion.Fully_Completed);
         levelState = LevelCompletion.Fully_Completed;
-        pauseGame();
+        
+        // pause game
+        pauseGameNoGUI();
+
+        // display completed screen
+        completedScreen.SetActive(true);
     }
 
-    public void pauseGame() {
+    public void pauseGameNoGUI() {
         Time.timeScale = 0.0f;
         gamePaused = true;
+    }
+
+    public void pauseGameGUI() {
+        pauseGameNoGUI();
+        pauseScreen.SetActive(true);
     }
 
     public void resumeGame() {
         Time.timeScale = 1.0f;
         gamePaused = false;
+        pauseScreen.SetActive(false);
     }
 
-    void startRewinding() {
+    public void startRewinding() {
         rewinding = true;
     }
 
-    void stopRewinding() {
+    public void stopRewinding() {
         rewinding = false;
-        pauseGame();
+        pauseGameNoGUI();
     }
 
     // creates all game objects required to play game
@@ -227,6 +248,10 @@ public class GameManager : MonoBehaviour
     public bool isGamePaused()
     {
         return this.gamePaused;
+    }
+
+    public int getNumUpdates() {
+        return this.numUpdates;
     }
 
     public static void setCurrentLevel(string levelName, bool isDefaultLevel) {
