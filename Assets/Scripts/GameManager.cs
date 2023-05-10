@@ -42,8 +42,6 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     GameObject pauseScreen;
 
-    InputHandler inputHandler = new InputHandler();
-
     // Awake is called before first frame update and before start
     void Awake() {
         instance = this;
