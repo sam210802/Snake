@@ -3,11 +3,35 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public static class AchievementManager
+public class AchievementManager : MonoBehaviour
 {
-    public static List<Achievement> achievements;
 
-    public static void InitializeAchievements() {
+    public static AchievementManager instance;
+    private static List<Achievement> achievements;
+    private IAchievement achievementSystem;
+
+    void Awake() {
+        if (instance != null && instance != this) {
+            Destroy(this.gameObject);
+        } else {
+            instance = this;
+            DontDestroyOnLoad(this.gameObject);
+        }
+    }
+
+    void Start() {
+        // if on platform with achievements this will return correct API
+        // e.g.. PlayStore API, Steam API, XBOX API
+        achievementSystem = GetComponent<IAchievement>();
+        Debug.Log(achievementSystem);
+        InitializeAchievements();
+    }
+
+    void Update() {
+        CheckAchievementCompletion();
+    }
+
+    public void InitializeAchievements() {
         if (achievements != null) return;
 
         achievements = new List<Achievement>();
@@ -60,20 +84,29 @@ public static class AchievementManager
         achievements.Add(new Achievement(achievememtTitle, $"Achieve 12 Achievements",
             (object o) => PlayerPrefs.GetInt("Achievements_Achieved", 0) >= 12 &&
             Convert.ToBoolean(PlayerPrefs.GetInt($"{achievememtTitle}_Completed", Convert.ToInt32(false))) == false));
+        CheckAchievementCompletion();
     }
 
     // checks each achievememt to see if they've been achieved
-    public static void CheckAchievementCompletion() {
+    public void CheckAchievementCompletion() {
         if (achievements == null) return;
 
         foreach (Achievement achievement in achievements) {
             achievement.UpdateCompletion();
+            // if another achievement system update achievement state for that achievement system
+            if (achievementSystem != null) {
+                achievementSystem.UpdateAchievement(achievement, achievement.achieved);
+            }
         }
     }
 
     // returns true if achievement has been achieved else returns false
     public static bool AchievementUnlocked(string achievementTitle) {
         return Convert.ToBoolean(PlayerPrefs.GetInt($"{achievementTitle}_Completed", Convert.ToInt32(false)));
+    }
+
+    public List<Achievement> getAchievements() {
+        return achievements;
     }
 }
 
@@ -90,7 +123,10 @@ public class Achievement {
     }
 
     public void UpdateCompletion() {
-        if (Convert.ToBoolean(PlayerPrefs.GetInt($"{title}_Completed", Convert.ToInt32(false)))) return;
+        if (Convert.ToBoolean(PlayerPrefs.GetInt($"{title}_Completed", Convert.ToInt32(false)))) {
+            achieved = true;
+            return;
+        }
 
         if (RequirementsMet()) {
             Debug.Log($"{title}: {description}");
@@ -98,6 +134,7 @@ public class Achievement {
             PlayerPrefs.SetInt("Achievements_Achieved", PlayerPrefs.GetInt("Achievements_Achieved", 0) + 1);
             // sets achievement state to completed so achievement can't be complted again
             PlayerPrefs.SetInt($"{title}_Completed", Convert.ToInt32(true));
+            achieved = true;
         }
     }
 

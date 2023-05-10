@@ -119,6 +119,26 @@ MonoBehaviour:
     m_Key: Score To Win
     m_Metadata:
       m_Items: []
+  - m_Id: 18656192294785024
+    m_Key: ACHIEVEMENTS
+    m_Metadata:
+      m_Items: []
+  - m_Id: 18674453761724416
+    m_Key: YOU WON
+    m_Metadata:
+      m_Items: []
+  - m_Id: 18675006994616320
+    m_Key: CONTINUE
+    m_Metadata:
+      m_Items: []
+  - m_Id: 18677285160194048
+    m_Key: GAME PAUSED
+    m_Metadata:
+      m_Items: []
+  - m_Id: 18678261891960832
+    m_Key: LEVEL COMPLETED
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

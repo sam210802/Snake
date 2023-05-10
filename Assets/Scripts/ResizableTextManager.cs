@@ -6,8 +6,6 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-// this class searches for any text with the "Text - Resizable" tag
-// and text with this tag is scaled according to the user input text size
 public class ResizableTextManager : MonoBehaviour
 {
     // location where default text sizes are stored
@@ -45,13 +43,13 @@ public class ResizableTextManager : MonoBehaviour
 
     void OnEnable() {
         updateTextSize();
-
     }
 
     void Update() {
         textUpdated = false;
 
         // forces text to update
+        // testing purposes
         if (forceUpdate) {
             updateTextSize();
             forceUpdate = false;

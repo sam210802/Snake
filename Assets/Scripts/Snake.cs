@@ -23,6 +23,8 @@ public class Snake : MonoBehaviour
     // position of tail on previous frame
     Vector3 tailPreviousPos;
 
+    InputHandler inputHandler = new InputHandler();
+
     void Awake() {
         instance = this;
         segments = new List<Transform>();
@@ -43,31 +45,19 @@ public class Snake : MonoBehaviour
         // records position of snake so player can rewind to it
         gameObject.GetComponent<TimeBody>().Record();
 
+        // movement control
+        inputHandler.AssignCommand(new UpCommand(this), KeyCode.W);
+        inputHandler.AssignCommand(new RightCommand(this), KeyCode.D);
+        inputHandler.AssignCommand(new DownCommand(this), KeyCode.S);
+        inputHandler.AssignCommand(new LeftCommand(this), KeyCode.A);
+
         GameUI.instance.updateScore();
     }
 
     // Update is called once per frame
     void Update() {
-        // stops two direction requests being logged before snake is moved
-        // resulting in user being able to go back on self
-        if (directionKeyUpdated) {
-            return;
-        }
-
-        // gets keyboard input from user and changes direction of snake if move is legal
-        if (Input.GetKeyDown(KeyCode.W) && direction != Vector2.down) {
-            direction = Vector2.up;
-            directionKeyUpdated = true;
-        } else if (Input.GetKeyDown(KeyCode.D)  && direction != Vector2.left) {
-            direction = Vector2.right;
-            directionKeyUpdated = true;
-        }  else if (Input.GetKeyDown(KeyCode.S) && direction != Vector2.up) {
-            direction = Vector2.down;
-            directionKeyUpdated = true;
-        }  else if (Input.GetKeyDown(KeyCode.A) && direction != Vector2.right) {
-            direction = Vector2.left;
-            directionKeyUpdated = true;
-        }
+        // check for user input each update
+        inputHandler.InputUpdate();
     }
 
     // fixed time interval
@@ -138,7 +128,7 @@ public class Snake : MonoBehaviour
     // resets snake to starting position, length and direction
     // and pauses game
     private void Reset() {
-        GameManager.instance.pauseGame();
+        GameManager.instance.pauseGameNoGUI();
         GameManager.instance.resetNumUpdates();
 
         GameUI.instance.setHighScore();
@@ -171,5 +161,13 @@ public class Snake : MonoBehaviour
     public void setDirection(Vector2 direction)
     {
         this.direction = direction;
+    }
+
+    public void setDirectionUpdated() {
+        this.directionKeyUpdated = true;
+    }
+
+    public bool getDirectionKeyUpdated() {
+        return this.directionKeyUpdated;
     }
 }

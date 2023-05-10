@@ -122,6 +122,26 @@ MonoBehaviour:
     m_Localized: 'Marquer Pour Gagner: '
     m_Metadata:
       m_Items: []
+  - m_Id: 18656192294785024
+    m_Localized: "R\xC9ALISATIONS"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 18674453761724416
+    m_Localized: "TU AS GAGN\xC9"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 18675006994616320
+    m_Localized: CONTINUER
+    m_Metadata:
+      m_Items: []
+  - m_Id: 18677285160194048
+    m_Localized: JEU EN PAUSE
+    m_Metadata:
+      m_Items: []
+  - m_Id: 18678261891960832
+    m_Localized: "NIVEAU TERMIN\xC9"
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []
